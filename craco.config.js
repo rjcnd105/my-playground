@@ -1,3 +1,5 @@
 module.exports = {
-  babel: { plugins: ['mobx-deep-action'] },
+  babel: {
+    // plugins: ['mobx-deep-action'],
+  },
 }
