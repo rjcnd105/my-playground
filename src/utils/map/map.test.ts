@@ -14,5 +14,5 @@ it('should ', function() {
     ['k3', 'v3'],
     ['k4', 'v4'],
   ])
-  iterMap(testMap, v => v)
+  // iterMap(testMap, v => v)
 })
