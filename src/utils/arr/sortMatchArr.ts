@@ -1,7 +1,7 @@
 // matchArr 배열 값대로 정렬시킴, matchArr에 없던 값은 맨 뒤로 이동
 // ex) sortMatchArr(['q', 'a', 'o'])(['o', null, 'q')
 // -> ['q', 'o', null]
-export const sortMatchArr = <T>(matchArr: T[]) => (arr: any[]) => {
+const sortMatchArr = <T>(matchArr: T[]) => (arr: any[]) => {
   return arr.sort((a, b) => {
     const aIndex = matchArr.findIndex(v => v === a)
 
@@ -18,3 +18,5 @@ export const sortMatchArr = <T>(matchArr: T[]) => (arr: any[]) => {
     return aIndex - bIndex
   })
 }
+
+export default sortMatchArr
