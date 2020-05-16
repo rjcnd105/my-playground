@@ -30,6 +30,8 @@ export const tupleReverse = <T1, T2>([v1, v2]: readonly [T1, T2]) => [v2, v1] as
 
 /***
  * @example
+ * isSubSet({a: 10, b: 20}, {a: 15}) :> true
+ * isSubSet({a: 10, b: 20}, {a: 15, c: 22}) :> false
  ***/
 export const isSubset = <T1 extends { [key: string]: any }, T2 extends T1>(superObj: T1, subObj: T2) => {
   for (const subObjKey in subObj) {
