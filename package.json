@@ -15,8 +15,7 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-scripts": "^3.4.0",
-    "redux": "^4.0.5",
-    "redux-observable": "^1.2.0",
+    "recoil": "^0.0.7",
     "rxjs": "^6.5.4"
   },
   "scripts": {
