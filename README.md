@@ -1,3 +1,1 @@
-Mobx 안쓸겁니다이제!
-
-대신 redux-observable 탐구할거얃
+그냥 하고 싶은 것들 하는 곳
