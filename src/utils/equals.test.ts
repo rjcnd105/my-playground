@@ -9,18 +9,18 @@ const student = {
   ],
 }
 
-type Student = typeof student
-
-const myFromEqual = fromEquals((x: string, y: number) => parseInt(x, 10) === y)
-
-const equalStudent: Eq<Student> = getStructEq({
-  a: eqNumber,
-  b: eqNumber,
-  score: eqStrict,
-})
-
-it('should Equal', function() {
-  eqString.equals('a', 'a')
-  getStructEq()
-  eqx
-})
+// type Student = typeof student
+//
+// const myFromEqual = fromEquals((x: string, y: number) => parseInt(x, 10) === y)
+//
+// const equalStudent: Eq<Student> = getStructEq({
+//   a: eqNumber,
+//   b: eqNumber,
+//   score: eqStrict,
+// })
+//
+// it('should Equal', function() {
+//   eqString.equals('a', 'a')
+//   getStructEq()
+//   eqx
+// })
