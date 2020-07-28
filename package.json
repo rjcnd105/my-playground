@@ -12,16 +12,16 @@
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "fp-ts": "^2.7.0",
-    "mobx": "4.15.4",
-    "mobx-react": "^6.2.2",
+    "mobx": "^5.15.4",
+    "mobx-react": "^6.2.3",
     "mobx-utils": "^5.6.1",
     "prelude-ts": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-script": "^2.0.5",
     "react-scripts": "^3.4.0",
-    "recoil": "^0.0.7",
-    "rxjs": "^6.5.4"
+    "recoil": "^0.0.10",
+    "rxjs": "^6.6.0"
   },
   "scripts": {
     "start": "craco start",
@@ -41,15 +41,15 @@
     ]
   },
   "devDependencies": {
-    "@craco/craco": "^5.6.3",
-    "@typescript-eslint/eslint-plugin": "^2.15.0",
-    "@typescript-eslint/parser": "^2.15.0",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.9.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "eslint-plugin-react": "^7.17.0",
-    "prettier": "^1.19.1",
+    "@craco/craco": "^5.6.4",
+    "@typescript-eslint/eslint-plugin": "^3.7.1",
+    "@typescript-eslint/parser": "^3.7.1",
+    "eslint": "^7.5.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.4",
+    "prettier": "^2.0.5",
     "react-app-polyfill": "^1.0.6",
-    "typescript": "^4.0.0-dev.20200710"
+    "typescript": "^4.0.0-dev.20200728"
   }
 }
