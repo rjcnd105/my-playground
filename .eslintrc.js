@@ -21,5 +21,6 @@ module.exports = {
   plugins: ['react', '@typescript-eslint'],
   rules: {
     'prettier/prettier': ['error'],
+    '@typescript-eslint/explicit-function-return-type': 'off',
   },
 }
