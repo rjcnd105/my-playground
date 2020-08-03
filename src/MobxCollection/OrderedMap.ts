@@ -16,7 +16,7 @@ export class OrderedMap<K, V> {
   }
 
   entries() {
-    return this.source.entries()
+    return this.#source.entries()
   }
 
   get [Symbol.toStringTag]() {
@@ -24,7 +24,7 @@ export class OrderedMap<K, V> {
   }
 
   [Symbol.iterator]() {
-    return this.source.entries()
+    return this.#source.entries()
   }
 
   static fromArr<
