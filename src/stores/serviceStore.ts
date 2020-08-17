@@ -1,7 +1,5 @@
 import { ClassT } from '../types/utils'
 
-const store = Symbol('store')
-
 // 서비스에 데이터 저장
 class ServiceStore {
   #store = new WeakMap<ClassT, InstanceType<ClassT>>()
