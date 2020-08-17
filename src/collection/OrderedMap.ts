@@ -1,30 +1,22 @@
-import { observable } from 'mobx'
-import { ValueOf } from '../types/utils'
-
 export class OrderedMap<K, V> {
-  @observable
-  private source: Map<K, V>
+  #source: Map<K, V>
 
-  constructor(iterableIterator: IterableIterator<[K, V]>)
   constructor(map: Map<K, V>)
+  constructor(iterableIterator: IterableIterator<[K, V]>)
   constructor(iterableIterator: IterableIterator<[K, V]> | Map<K, V>) {
     if (iterableIterator instanceof Map) {
-      this.source = iterableIterator
+      this.#source = iterableIterator
     } else {
-      this.source = new Map(iterableIterator)
+      this.#source = new Map(iterableIterator)
     }
-  }
-
-  entries() {
-    return this.#source.entries()
   }
 
   get [Symbol.toStringTag]() {
     return 'Ordered Map'
   }
 
-  [Symbol.iterator]() {
-    return this.#source.entries()
+  get size() {
+    return this.#source.size
   }
 
   static fromArr<
@@ -33,6 +25,7 @@ export class OrderedMap<K, V> {
   >(coll: valT[], key: keyT) {
     return new this(new Map(coll.map((value) => [value[key], value])))
   }
+
   static fromObj<objT extends { [key in ObjKey]: unknown }>(obj: objT) {
     const map = new Map<keyof objT, objT[keyof objT]>()
     for (const key in obj) {
@@ -40,10 +33,55 @@ export class OrderedMap<K, V> {
     }
     return new this(map)
   }
+
   static fromIter<K, V>(iterableIterator: IterableIterator<[K, V]>) {
     return new this(iterableIterator)
   }
+
+  entries() {
+    return this.#source.entries()
+  }
+
+  [Symbol.iterator]() {
+    return this.#source.entries()
+  }
+
+  set(key: K, value: V) {
+    this.#source.set(key, value)
+    return this
+  }
+
+  get(key: K) {
+    return this.#source.get(key)
+  }
+
+  has(key: K) {
+    return this.#source.has(key)
+  }
+
+  delete(key: K) {
+    this.#source.delete(key)
+    return this
+  }
+
+  clear() {
+    this.#source.clear()
+    return this
+  }
+
+  toArr() {
+    return [...this.#source]
+  }
+
+  toValueArr() {
+    return [...this.#source.values()]
+  }
+
+  toKeyArr() {
+    return [...this.#source.keys()]
+  }
 }
+
 const mockData = [
   { a: 10, b: 's' },
   { a: 30, b: 'ss' },
