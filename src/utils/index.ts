@@ -108,3 +108,9 @@ export const exactPick = <
 
   return result as Pick<T, K[number]>
 }
+
+export const typedObjectKeys = <objT, keysT extends keyof objT>(
+  obj: Record<keysT, unknown>
+) => {
+  return Object.keys(obj) as keysT[]
+}
