@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emotion/core": "^11.0.0-next.10",
+    "@emotion/babel-preset-css-prop": "^10.0.27",
+    "@emotion/core": "^10.0.35",
+    "@emotion/styled": "^10.0.27",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -14,6 +16,7 @@
     "@types/react-dom": "^16.9.0",
     "eslint": "6.8.0",
     "fp-ts": "^2.8.1",
+    "framer-motion": "^2.6.5",
     "immutable": "^4.0.0-rc.12",
     "mobx": "^5.15.4",
     "mobx-react": "^6.2.3",
@@ -28,7 +31,9 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test"
+    "test": "craco test",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "browserslist": {
     "production": [
@@ -43,14 +48,23 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.11.4",
     "@craco/craco": "^5.6.4",
-    "@typescript-eslint/eslint-plugin": "^3.7.1",
-    "@typescript-eslint/parser": "^3.7.1",
+    "@storybook/addon-actions": "^6.0.20",
+    "@storybook/addon-essentials": "^6.0.20",
+    "@storybook/addon-links": "^6.0.20",
+    "@storybook/node-logger": "^6.0.20",
+    "@storybook/preset-create-react-app": "^3.1.4",
+    "@storybook/react": "^6.0.20",
+    "@typescript-eslint/eslint-plugin": "^3.10.1",
+    "@typescript-eslint/parser": "^3.10.1",
+    "babel-loader": "^8.1.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.20.4",
+    "eslint-plugin-react": "^7.20.6",
     "prettier": "^2.0.5",
     "react-app-polyfill": "^1.0.6",
-    "typescript": "^4.0.1-rc"
+    "react-is": "^16.13.1",
+    "typescript": "^4.0.2"
   }
 }

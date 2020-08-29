@@ -1,4 +1,5 @@
 import { exactPick, typedObjectKeys } from '../utils'
+import { Seq } from 'immutable'
 
 type Ordering = -1 | 0 | 1
 
@@ -37,7 +38,6 @@ class SortOption<T> {
   }
 }
 
-Array
 type PredRecord<K extends string, T> = Record<K, PredicateFn<T>>
 type RecordKeys<R extends Record<string, unknown>> = keyof R
 
@@ -48,11 +48,13 @@ interface SortOptionsConstructor {
     PredRecord<K, T>
   >
 }
-
+// Array
 export const SortOptions = {
   new<K extends string, T>(optionObj: PredRecord<K, T>): _SortOptions<K, T> {
     return new _SortOptions<K, T>(optionObj)
   },
+
+  // constructor() {},
 }
 
 class _SortOptions<keysT extends string, T> {
@@ -81,18 +83,18 @@ const preds = {
   myPred1: (item: string) => item.length > 6,
 }
 
-const sdsds = new SortOptions.new<string>(preds)
+// const sdsds = new SortOptions.new<string>(preds)
+//
+// s.pred
+// s.predNames()
+//
+// const a = {
+//   h: 'd',
+//   h2: 'd',
+//   h3: 'd',
+//   h4: 'd',
+// }
 
-s.pred
-s.predNames()
-
-const a = {
-  h: 'd',
-  h2: 'd',
-  h3: 'd',
-  h4: 'd',
-}
-
-const kk = typedObjectKeys(a)
-
-type s = keyof typeof a
+// const kk = typedObjectKeys(a)
+//
+// type s = keyof typeof a
