@@ -28,12 +28,11 @@ const greaterThen10 = Opt.fromPredicate((d: number) => d > 10)
 greaterThen10(15) // some(15)
 greaterThen10(5) // none
 
-const d: Opt.Option<() => 10> = Opt.none
-
 /* ap(opt<A>)((opt<A>) => opt<B>) */
 // apply: 1. 값이 바인딩 되어 있고, 2. 그 바인딩된 값을 처리할 함수를 넘김
 // 바인딩된 값이 none인 경우 어떤 함수던 none
 // some인 경우에만 처리됨
+
 const apN3 = Opt.ap(Opt.some(3))
 const apNone = Opt.ap(Opt.none)
 apN3(Opt.none) /*?*/
@@ -144,6 +143,8 @@ Opt.Do /*?*/ // some({})
 /* exists(f)(v) */
 // pred를 받은 후 Option을 받아 some안의 value를 검증함
 
-Opt.exists((n: number) => n >= 1)(Opt.some(3)) /*?*/ // true
-Opt.exists((n: number) => n >= 1)(Opt.some(0)) /*?*/ // false
-Opt.exists((n: number) => n >= 1)(Opt.none) /*?*/ // false
+const graterThan1 = Opt.exists((n: number) => n >= 1)
+
+graterThan1(Opt.some(3)) /*?*/ // true
+graterThan1(Opt.some(0)) /*?*/ // false
+graterThan1(Opt.none) /*?*/ // false
