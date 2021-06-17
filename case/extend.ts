@@ -13,6 +13,7 @@
 // }
 
 import { AbstractConstructor } from '../idea/basic'
+import { Constructor } from '../src/types/utils'
 
 function applyMixins<C extends AbstractConstructor[]>(...constructors: [...C]) {
   console.log('applyMixins', constructors)
@@ -59,7 +60,7 @@ function applyMixins<C extends AbstractConstructor[]>(...constructors: [...C]) {
 //   return _Base
 // }
 //
-// applyMixins(Animal, Dog) /*?*/
+// applyMixins(An imal, Dog) /*?*/
 //
 // // A mixin which adds a new function (in this case, animate)
 // function animatableAnimal<

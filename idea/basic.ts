@@ -1,14 +1,14 @@
 import { fromNullable, isSome, none, Option, some } from 'fp-ts/Option'
 import Dataclass from 'dataclass'
 
-export const Struct = class Struct extends Dataclass<Struct> {
+class Struct<T> extends Dataclass<T> {
   readonly _URI = 'Struct'
-  constructor(...args: any[]) {
-    super(...args)
+  constructor(param: Partial<T>) {
+    super(param)
   }
 }
 
-class DD extends Struct {
+class DD extends Struct<DD> {
   id = 0
   a?: number
   b?: number
@@ -16,11 +16,23 @@ class DD extends Struct {
 
 const dd = new DD({ a: 20, b: 30 })
 dd.toJSON() /*?*/
+dd.a /*?*/
+dd._URI /*?*/
+const dd2 = dd.copy({ a: 30 }) /*?*/
+dd2.a /*?*/
 
-class DDD extends Struct {
+class DDD<T> extends Struct<T> {
   readonly tag = 'DDD'
   #a = 152
   c = 'hi'
+}
+
+const o1 = {
+  type: 'o1',
+}
+
+interface Adsafsf {
+  (n: number): string
 }
 
 function applyMixins<C extends AbstractConstructor[]>(...constructors: [...C]) {
