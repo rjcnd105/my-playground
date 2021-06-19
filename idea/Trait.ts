@@ -1,6 +1,6 @@
 export class Trait<T extends Record<string, any>> {
-  #keyToSym: Map<keyof T, symbol> = new Map()
-  #symToTrait: Map<symbol, any> = new Map()
+  #keyToSym = new Map<keyof T, symbol>()
+  #symToTrait = new Map<symbol, any>()
 
   constructor(traitData: T) {
     for (const traitDataKey in traitData) {
@@ -59,6 +59,6 @@ t.isImpl(A) /*?*/
 const s = Symbol()
 
 class B {
-  [t.sym('name')]: 'dd';
+  // [t.sym('name')]: 'dd'; // ERROR!
   [s]: 'aaa'
 } /*?*/
