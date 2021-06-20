@@ -81,6 +81,11 @@ export type AbstractConstructor<
   argT extends any[] = any[]
 > = abstract new (...args: [...argT]) => T
 
+const make = <T>(a: AbstractConstructor<T>) =>
+  class extends a {
+    a: 10
+  }
+
 // class Struct<T> {
 //   readonly _URI = 'Struct'
 //   readonly tag = 'Struct'
@@ -128,3 +133,25 @@ export interface Trait {}
 // const user = user /*?*/
 // user.name /*?*/
 // isSome(user.name) /*?*/
+
+const r: Record<string, any> = {}
+
+class T<typeT> extends Dataclass<typeT> {}
+interface T<typeT extends { age: number }> {
+  data: typeT
+  name: string
+}
+T.prototype.name = ''
+
+class TT<typeT> extends Dataclass<typeT> {}
+
+interface TT<typeT> extends T<typeT> {
+  address: string
+}
+TT.prototype.address = ''
+
+const myT = new T({ age: 10 })
+myT.name /*?*/
+myT.data.age /*?*/
+
+// const myTT = new TT({ age: 14 })
