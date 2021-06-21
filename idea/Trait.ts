@@ -1,5 +1,4 @@
 import Dataclass from 'dataclass'
-import { AbstractConstructor } from './basic'
 import { Constructor } from '../src/types/utils'
 
 // export class Trait<T extends Record<string, any>> {
@@ -67,35 +66,47 @@ import { Constructor } from '../src/types/utils'
 //   [s]: 'aaa'
 // } /*?*/
 
-abstract class DataClass<T extends Record<string, unknown>> {
-  [key: keyof T]: T[keyof T]
+// Struct, Trait
 
-  constructor(data: T) {
-    Object.assign(this, data)
+const TraitSym = Symbol('Trait')
+const StructSym = Symbol('Struct')
+
+type OmitDataclassProperties<T> = Omit<T, '_URI'>
+
+class Struct<T> extends Dataclass<OmitDataclassProperties<T>> {
+  readonly _URI = TraitSym
+
+  static isStruct(d: any) {
+    return d._URI === Struct.prototype._URI
+  }
+  constructor(...args: OmitDataclassProperties<T>[]) {
+    super(...args)
   }
 }
 
-// 구조체(Struct)
-type OmitDataclassProperties<T> = Omit<T, keyof Dataclass<never> | '_URI'>
-class A extends Dataclass<A> {
-  a = 'a'
-}
-class AA extends A {
-  aa = 'aa'
+class Trait<T> extends Dataclass<OmitDataclassProperties<T>> {
+  readonly _URI = StructSym
+
+  static isTrait(d: any) {
+    return d._URI === Trait.prototype._URI
+  }
+  constructor(...args: OmitDataclassProperties<T>[]) {
+    super(...args)
+  }
 }
 
-const a = new A() /*?*/
-const aa = new AA()
-a.a /*?*/
-aa.aa /*?*/
-
-class Struct<T> extends Dataclass<T> {
-  readonly _URI = 'Struct'
+type UriImpl = { readonly _URI: 'Impl' }
+interface Impl {
+  fromTrait<traitT>(trait: Trait<traitT>): {
+    for<structT>(
+      struct: Struct<structT>
+    ): Trait<traitT> & Struct<structT> & UriImpl
+  }
+  fromStruct<structT>(struct: Struct<structT>): Struct<structT> & UriImpl
 }
 
-class Trait<T> extends Dataclass<T> {
-  readonly _URI = 'Trait'
-}
+// const Impl = (trait:) => {
+// };
 
 function applyMixins(derivedCtor: any, constructors: any[]) {
   constructors.forEach((baseCtor) => {
@@ -127,6 +138,7 @@ function makeTrait<T1>(_Trait: Constructor<Trait<T1>>) {
           super(properties)
         }
       }
+
       applyMixins(_Impl, [
         _Trait,
         _Struct,
@@ -142,6 +154,7 @@ function makeTrait<T1>(_Trait: Constructor<Trait<T1>>) {
 const UserTrait = makeTrait(
   class UserTrait extends Trait<UserTrait> {
     accessDateStr?: `${number}-${number}-${number}`
+
     getAccessDate() {
       return this.accessDateStr ? new Date(this.accessDateStr) : undefined
     }
@@ -151,12 +164,16 @@ const UserTrait = makeTrait(
 interface User {
   name: string
 }
+
 class StudentDTO extends Dataclass<StudentDTO> {
   school?: string
   age = 0
 }
+
 interface StudentDTO extends User, Struct<StudentDTO> {}
+
 class ParentDTO extends Struct<ParentDTO> {}
+
 interface ParentDTO extends User, Struct<ParentDTO> {
   phoneNumber: string
 }
@@ -168,15 +185,16 @@ class User2 extends Dataclass<User2> {
   name?: string
   age = 0
 }
+
 class User3 extends User2 {
   address = 'address'
 }
 
 class Struct2 extends Struct<Struct2> {
-  name?: string
+  name = 'noname'
 }
 
-const st2 = new Struct2({ name: 'dd' })
+const st2 = new Struct2()
 console.log('', st2.name) /*?*/
 
 class StudentD extends Struct<StudentD> {
