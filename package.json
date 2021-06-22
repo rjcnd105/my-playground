@@ -27,7 +27,8 @@
     "react-script": "^2.0.5",
     "react-scripts": "^3.4.0",
     "recoil": "^0.0.10",
-    "rxjs": "^6.6.0"
+    "rxjs": "^6.6.0",
+    "ts-mixer": "^5.4.1"
   },
   "scripts": {
     "start": "craco start",

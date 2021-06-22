@@ -1,5 +1,6 @@
 import Dataclass from 'dataclass'
 import { Constructor } from '../src/types/utils'
+import { Mixin } from 'ts-mixer'
 
 // export class Trait<T extends Record<string, any>> {
 //   #keyToSym = new Map<keyof T, symbol>()
@@ -70,14 +71,15 @@ import { Constructor } from '../src/types/utils'
 
 const TraitSym = Symbol('Trait')
 const StructSym = Symbol('Struct')
+const ImplSym = Symbol('Impl')
 
 type OmitDataclassProperties<T> = Omit<T, '_URI'>
 
 class Struct<T> extends Dataclass<OmitDataclassProperties<T>> {
-  readonly _URI = TraitSym
+  [StructSym] = true
 
   static isStruct(d: any) {
-    return d._URI === Struct.prototype._URI
+    return !!d[StructSym]
   }
   constructor(...args: OmitDataclassProperties<T>[]) {
     super(...args)
@@ -85,25 +87,38 @@ class Struct<T> extends Dataclass<OmitDataclassProperties<T>> {
 }
 
 class Trait<T> extends Dataclass<OmitDataclassProperties<T>> {
-  readonly _URI = StructSym
+  [TraitSym] = true
 
   static isTrait(d: any) {
-    return d._URI === Trait.prototype._URI
+    return !!d[TraitSym]
   }
   constructor(...args: OmitDataclassProperties<T>[]) {
     super(...args)
   }
 }
 
-type UriImpl = { readonly _URI: 'Impl' }
-interface Impl {
-  fromTrait<traitT>(trait: Trait<traitT>): {
-    for<structT>(
-      struct: Struct<structT>
-    ): Trait<traitT> & Struct<structT> & UriImpl
+const Impl = (() => {
+  const extendImpl = <ctorT extends Constructor>(ctor: ctorT) =>
+    class extends ctor {
+      [ImplSym] = true
+    }
+
+  return {
+    fromTrait<traitT extends Constructor<Trait<any>>>(Trait: traitT) {
+      return {
+        for<structT extends Constructor<Struct<any>>>(Struct: structT) {
+          return extendImpl(Mixin(Struct, Trait))
+        },
+      }
+    },
+    fromStruct<structT extends Constructor<Struct<any>>>(Struct: structT) {
+      return extendImpl(Struct)
+    },
+    isImpl(any: any) {
+      return !!any[ImplSym]
+    },
   }
-  fromStruct<structT>(struct: Struct<structT>): Struct<structT> & UriImpl
-}
+})()
 
 // const Impl = (trait:) => {
 // };
@@ -165,21 +180,11 @@ interface User {
   name: string
 }
 
-class StudentDTO extends Dataclass<StudentDTO> {
-  school?: string
-  age = 0
-}
-
-interface StudentDTO extends User, Struct<StudentDTO> {}
-
 class ParentDTO extends Struct<ParentDTO> {}
 
 interface ParentDTO extends User, Struct<ParentDTO> {
   phoneNumber: string
 }
-
-const std = new StudentDTO() /*?*/
-console.log('', std.age)
 
 class User2 extends Dataclass<User2> {
   name?: string
@@ -194,6 +199,51 @@ class Struct2 extends Struct<Struct2> {
   name = 'noname'
 }
 
+const ImplStruct2 = Impl.fromStruct(Struct2)
+class ASD extends Impl.fromStruct(Struct2) {}
+
+class D extends Impl.fromStruct(Struct2) {
+  money = 3000
+}
+interface D extends Struct2 {}
+
+Struct.isStruct(new Struct2()) /*?*/
+
+const aaaa = new D() /*?*/
+aaaa.name /*?*/
+aaaa.money /*?*/
+
+aaaa /*?*/
+
+Trait.isTrait(aaaa) /*?*/
+Struct.isStruct(aaaa) /*?*/
+
+class MyTrait extends Trait<MyTrait> {
+  #dimension = 3
+  #area = 10
+  getDimension() {
+    return this.#dimension
+  }
+  getArea() {
+    return this.#area
+  }
+}
+class MyStruct extends Struct<MyStruct> {
+  x = 10
+  y = 10
+}
+interface MyImpl extends MyTrait, MyStruct {}
+class MyImpl extends Impl.fromTrait(MyTrait).for(MyStruct) {
+  getDimensionArea() {
+    return this.x * this.y * this.getArea() * this.getDimension()
+  }
+}
+const myImpl = new MyImpl({ x: 3, y: 4 })
+const myImpl2 = new MyImpl({ x: 7, y: 12 })
+
+myImpl.getDimensionArea() /*?*/ // 360
+myImpl2.getDimensionArea() /*?*/ // 2520
+
 const st2 = new Struct2()
 console.log('', st2.name) /*?*/
 
@@ -205,3 +255,15 @@ const user2 = new User2({ name: 'ddd' })
 console.log(user2.name, user2.age)
 const user3 = new User3({ name: 'ddd' })
 console.log(user3.name, user3.age, user3.address)
+
+class A {
+  a = 10
+}
+
+class B {
+  b = 30
+}
+
+class C extends Mixin(A, B) {
+  c = 100
+}
