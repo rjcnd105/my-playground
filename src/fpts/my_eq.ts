@@ -88,9 +88,9 @@ eq3dNumbers.equals([[[1, 4]], [[4, 2]]], [[[1, 4]], [[4, 2]]]) /*?*/ // true
 eq3dNumbers.equals([[[1, 4]], [[4, 2]]], [[[1, 4]], [[4, 4]]]) /*?*/ // false
 
 // contravariant (https://hackage.haskell.org/package/contravariant-1.4.1/docs/Data-Functor-Contravariant.html#g:3)
-// 반 변성 펑터
-// 값을 소비하는 형태의 펑터이다.
 // 대표적인 구현체 메소드로는 contramap이 있다.
+// 반 공변적으로 적용
+// contramap(B -> A) -> (F<A>) -> F<B>
 // contramap은 여기서 아주 친절하게 설명이 되어 있다.
 // https://medium.com/@stephaneledorze/the-contravariant-functor-a7ae93e2eae0
 
