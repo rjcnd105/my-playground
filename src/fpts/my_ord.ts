@@ -1,9 +1,17 @@
+/***
+ * Ord
+ * Order 할때 그 Ord 맞다.
+ * 비교기를 통해 Ordering(1 | 0 | -1)를 반환한다.
+ * 나중에 배울 semigroup, monoid와 결합하여 여러 Ord들을 결합하여 1순위, 2순위, ... 정렬을 할 수 있다.
+ ***/
+
 import * as Ord from 'fp-ts/lib/Ord'
 import * as EQ from 'fp-ts/Eq'
 import * as N from 'fp-ts/number'
 import * as S from 'fp-ts/string'
+import { Ordering } from 'fp-ts/Ordering'
 
-const numCompare = (x: number, y: number) => {
+const numCompare = (x: number, y: number): Ordering => {
   if (x > y) return -1
   if (x < y) return 1
   return 0
@@ -34,13 +42,13 @@ const numOrd2 = Ord.fromCompare(numCompare) // Ord<number>
  * equalsDefault<T>
  * (compare(T, T)) -> equal(T, T)
  ***/
-const numEq = EQ.fromEquals(Ord.equalsDefault(numCompare))
+const numEq: EQ.Eq<number> = EQ.fromEquals(Ord.equalsDefault(numCompare)) // Eq<number>
 
 /***
  * tuple<T1, T2, ...>
  * (Ord<T1>, Ord<T2>, ...) -> Ord<[T1, T2, ...]>
  ***/
-const tupleOrd = Ord.tuple(N.Ord, S.Ord)
+const tupleOrd: Ord.Ord<readonly [number, string]> = Ord.tuple(N.Ord, S.Ord)
 
 tupleOrd.compare([1, 'f'], [1, 'a']) /*?*/ // 1
 tupleOrd.compare([1, 'f'], [1, 'f']) /*?*/ // 0
@@ -87,7 +95,7 @@ const getUserForAgeClamp나영to가영 = Ord.clamp(userAgeOrd)(나영, 가영)
 isAgeBetween나영to가영(다영) /*?*/ // true
 isAgeBetween나영to가영(라영) /*?*/ // false
 
-// User가 나영 ~ 가영의 사이면 User반환
+// User의 age가 나영 ~ 가영의 사이면 User반환
 // 나영보다 작으면 나영
 // 가영보다 크면 가영
 getUserForAgeClamp나영to가영(마영) /*?*/ // 나영

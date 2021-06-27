@@ -53,7 +53,7 @@ eqXPlusOneIsY.equals({ id: 1, name: '펜' }, { id: 1, name: '중고 펜' }) /*?*
  * 기존 형태(A)를 유지하며 새로운 A를 만듬
  ***/
 // Eq combinators example
-// Eq<A> => Eq<A[]>
+// Eq<A> -> Eq<A[]>
 export function getEq<A>(E: EQ.Eq<A>): EQ.Eq<ReadonlyArray<A>> {
   return EQ.fromEquals(
     (xs, ys) =>
@@ -105,7 +105,7 @@ export interface User {
   name: string
 }
 
-// ~ contramap((user: User) => user.id)(N.Eq)
+// ~ contramap((user: User) -> user.id)(N.Eq)
 export const eqUser: EQ.Eq<User> = pipe(
   N.Eq,
   contramap((user: User) => user.id)
