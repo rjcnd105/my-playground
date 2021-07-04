@@ -1,16 +1,13 @@
-class dataclass<T extends Record<string, any>> {
-  constructor(d: Partial<T>) {
-    Object.assign(this, d)
-  }
-}
+import * as res from 'res'
 
+// Response
 // 클래스 선언시 함수 못쓰게 할 수 없나...
-class A extends dataclass<A> {
+class A extends VO<A> {
   name = ''
   age?: number
   point?: { x: number; y: number }
 }
-class B extends dataclass<A> {
+class B extends VO<B> {
   phone?: number
   address?: string
 }
@@ -25,3 +22,22 @@ const b: B = {}
 const c: C = {}
 
 const abc: A & B & C = { name: 'abc' }
+
+const obj = { name: 'aa', zzz: 10 }
+// const d: A = { name: 'aa', zzz: 10 } // 이건 안되고
+const d: A = obj // 이건 되네 제길,
+
+abstract class DTO<dataT = any, controllerT = any, adapterT = any> {
+  abstract data: dataT
+  abstract controller: controllerT
+  abstract adapter: adapterT
+}
+
+type d = res.Student
+type s = res.Teacher
+
+class Student extends DTO {
+  adapter = 'ddd'
+  controller: unknown
+  data = new res.Student()
+}
