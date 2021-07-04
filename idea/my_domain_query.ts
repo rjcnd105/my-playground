@@ -31,13 +31,47 @@ abstract class DTO<dataT = any, controllerT = any, adapterT = any> {
   abstract data: dataT
   abstract controller: controllerT
   abstract adapter: adapterT
+
+  copy(overwrite?: dataT): this {
+    // @ts-ignore
+    return new this(Object.assign({}, this.data, overwrite))
+  }
+
+  constructor() {}
 }
+
+function makeDTO<dataT, apiT, adapT>({
+  data,
+  api,
+  adapter,
+}: {
+  data: dataT
+  api: apiT
+  adapter: adapT
+}) {
+  return class DTO {
+    data = data
+    api = api
+    adapter = adapter
+
+    constructor(d?: Partial<DTO['data']>) {
+      if (d) Object.assign(this.data, d)
+    }
+
+    copy(d: Partial<DTO['data']>) {
+      return new DTO({ ...this.data, ...d })
+    }
+  }
+}
+
+const Student = makeDTO({
+  data: new res.Student(),
+  api: {},
+  adapter: {},
+})
 
 type d = res.Student
 type s = res.Teacher
 
-class Student extends DTO {
-  adapter = 'ddd'
-  controller: unknown
-  data = new res.Student()
-}
+const student1 = new Student()
+const student2 = student1.copy({})
