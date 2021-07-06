@@ -1,6 +1,6 @@
-import res from 'res'
-
 declare module 'res' {
+  import { VO } from './type'
+
   class Student extends VO<Student> {
     name = ''
     age?: number

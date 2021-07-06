@@ -1,6 +1,6 @@
-import * as res from 'res'
+import * as res from 'src/res'
 
-declare module 'res' {
+declare module 'src/res' {
   class Teacher extends VO<Teacher> {
     name = ''
     age?: number
