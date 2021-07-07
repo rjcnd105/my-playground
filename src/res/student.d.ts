@@ -1,5 +1,5 @@
 declare module 'res' {
-  import { VO } from './type'
+  import { VO } from './VO'
 
   class Student extends VO<Student> {
     name = ''

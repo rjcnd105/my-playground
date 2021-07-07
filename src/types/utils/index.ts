@@ -4,6 +4,7 @@ import { typeSafeAssign } from '../../utils'
 export type Constructor<T = any, argT extends any[] = any[]> = new (
   ...args: [...argT]
 ) => T
+
 export type AbstractConstructor<
   T = any,
   argT extends any[] = any[]
