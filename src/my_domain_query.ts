@@ -1,5 +1,16 @@
 import { VO } from './res/VO'
 import { Constructor } from './types/utils'
+import { Observable } from 'rxjs'
+import {
+  action,
+  comparer,
+  makeAutoObservable,
+  isObservable,
+  makeObservable,
+  observable,
+  reaction,
+  isAction,
+} from 'mobx'
 
 class A extends VO<A> {
   name = ''
@@ -62,16 +73,18 @@ namespace res {
   }
 }
 
-interface DomainParams<dataT, apiT, adapT> {
+interface DomainParams<dataT, apiT, adapT, actionT, compT> {
   data: dataT
+  action: actionT
+  comp: compT
   api: apiT
   adapter: adapT
   isEq?: (d1: dataT) => boolean
 }
 
 // 함수 인자로 클래스를 받음, 받을때 타입 추론과정을 거침(+ 추후 작성할 것을 정의함으로써 abstract class와 비슷한 효과를 누림)
-function makeDomain<dataT, apiT, adapT>(
-  ctor: Constructor<DomainParams<dataT, adapT, apiT>>
+function makeDomain<dataT, apiT, adapT, actionT, compT>(
+  ctor: Constructor<DomainParams<dataT, adapT, apiT, actionT, compT>>
 ) {
   return class Domain extends ctor {
     constructor(d?: Partial<dataT>) {
@@ -82,24 +95,45 @@ function makeDomain<dataT, apiT, adapT>(
     copy(d?: Partial<dataT>) {
       return new Domain({ ...this.data, ...d })
     }
+    update(d?: Partial<dataT>) {
+      if (d) Object.assign(this.data, d)
+    }
   }
 }
 
 // 성공적
 const User = makeDomain(
   class {
-    data = new res.User()
+    readonly data = makeObservable(new res.User(), { name: observable })
     api = {}
     adapter = {}
+    comp = {}
+    action = {
+      setName: action((n: res.User['name']) => {
+        this.data.name = n
+      }),
+    }
     isEq(d: res.User) {
       return this.data.id === d.id
     }
   }
 )
 
-const user = new User()
+const UserEq = {}
+
+const user = new User() /*?*/
+
 const user2 = user.copy({ id: 2, name: 'aa' }) /*?*/
 
+user.action.setName('dd')
+user.update({ name: 'dd2' })
+// user.data /*?*/
+// user.data = { id: 23, name: 'dsds' }
+// user.data.name = 'dsds'
+console.log(isObservable(user))
+console.log(isAction(user.action.setName))
+console.log(isObservable(user.data))
+// user.setData({ id: 33, name: 'ff' })
 // Response
 // 외부 모듈 VO
 // class Student2 extends DTO<res.Student> {
