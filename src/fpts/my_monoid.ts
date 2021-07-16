@@ -21,18 +21,21 @@ import { Semigroup } from 'fp-ts/lib/Semigroup'
 import { contramap, getMonoid, reverse } from 'fp-ts/Ord'
 import { sort } from 'fp-ts/lib/Array'
 
+// <Number, +> 항등원 0
 const monoidSum: Monoid<number> = {
   concat: (x, y) => x + y,
   // <number, +>의 항등원 0
   empty: 0,
 }
 
+// <Number, *> 항등원 1
 const monoidProduct: Monoid<number> = {
   concat: (x, y) => x * y,
   // <number, *>의 항등원 1
   empty: 1,
 }
 
+// <string, +> 항등원 ''
 const monoidString: Monoid<string> = {
   concat: (x, y) => x + y,
   // <string, +>의 항등원 ''
@@ -62,6 +65,8 @@ concatAll(monoidAny)([true, false, true]) // true
 const semigroupSpace: Semigroup<string> = {
   concat: (x, y) => x + ' ' + y,
 }
+
+// semigroupSpace.concat('a', 'b') // 'a b'
 semigroupSpace.concat('a', '') // 'a '
 semigroupSpace.concat('', 'b') // ' b'
 
@@ -110,7 +115,7 @@ const users: Array<User> = [
 const ord11 = M.concat(byRememberMe, byId)
 const ord12 = M.concat(byId, byRememberMe)
 // sort(ord1)(users) /*?*/
-sort(ord11)(users) /*?*/
+sort(ord11)(users) /*?*/  
 /*
 * [ { id: 1, name: 'Guido', age: 47, rememberMe: false },
   { id: 3, name: 'Giulio', age: 44, rememberMe: false },

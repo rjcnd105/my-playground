@@ -13,11 +13,13 @@ import * as N from 'fp-ts/number'
 import * as S from 'fp-ts/string'
 import * as FN from 'fp-ts/function'
 import * as Semi from 'fp-ts/Semigroup'
+import { Monoid } from "fp-ts/Monoid";
 
 interface Point {
   readonly x: number
   readonly y: number
 }
+
 
 /*** struct ***/
 // 구조체 형태의 각각에 속성에 semigroup을 정의
