@@ -12,7 +12,7 @@
 //   }
 // }
 
-import { AbstractConstructor } from '../idea/basic'
+import { AbstractConstructor } from '../src/idea/basic'
 import { Constructor } from '../src/types/utils'
 
 function applyMixins<C extends AbstractConstructor[]>(...constructors: [...C]) {

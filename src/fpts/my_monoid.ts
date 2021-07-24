@@ -115,7 +115,7 @@ const users: Array<User> = [
 const ord11 = M.concat(byRememberMe, byId)
 const ord12 = M.concat(byId, byRememberMe)
 // sort(ord1)(users) /*?*/
-sort(ord11)(users) /*?*/  
+sort(ord11)(users) /*?*/
 /*
 * [ { id: 1, name: 'Guido', age: 47, rememberMe: false },
   { id: 3, name: 'Giulio', age: 44, rememberMe: false },

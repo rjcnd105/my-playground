@@ -1,12 +1,10 @@
-import { QueryClientProvider } from 'react-query'
-import { ReactQueryDevtools } from 'react-query/devtools'
-import { queryClient } from '../queryClient'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
 
-export default function Home() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      {/* The rest of your application */}
-      <ReactQueryDevtools initialIsOpen />
-    </QueryClientProvider>
-  )
-}
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+)

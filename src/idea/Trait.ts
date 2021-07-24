@@ -1,5 +1,5 @@
 import Dataclass from 'dataclass'
-import { Constructor } from '../src/types/utils'
+import { Constructor } from '../types/utils'
 import { Mixin } from 'ts-mixer'
 
 // export class Trait<T extends Record<string, any>> {
