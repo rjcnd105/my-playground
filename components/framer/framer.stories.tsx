@@ -60,6 +60,7 @@ export const SwapPositionStories3 = () => {
 export const MotionValueStories = () => {
   return (
     <Wrap>
+      <div className="fu">!!!</div>
       <MotionValue />
     </Wrap>
   )

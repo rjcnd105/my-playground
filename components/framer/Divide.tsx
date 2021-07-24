@@ -20,9 +20,10 @@ const Divide = () => {
       setOriginalWidth(ref.current.clientWidth)
     }
   })
+  console.log(style)
 
   return (
-    <div className={style.css}>
+    <div className={style.S}>
       <motion.div
         className="left"
         ref={ref}

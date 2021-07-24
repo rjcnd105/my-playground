@@ -1,0 +1,16 @@
+.wrap {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  background-color: #eeeeee;
+}
+.basic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 100px;
+  background-color: #ff9999;
+  border-radius: 50%;
+}
+

@@ -5,29 +5,11 @@ import {
   useMotionValue,
   useTransform,
 } from 'framer-motion'
-import { css } from '@emotion/core'
+import css from './MotionValue.module.css'
 
 type Props = {
   stage: number
 }
-
-// 기본적으로 Spring
-// layout 속성은 위치 값만 변경된다.
-const wrapCss = css`
-  position: relative;
-  width: 300px;
-  height: 300px;
-  background-color: #eeeeee;
-`
-const basic = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100px;
-  height: 100px;
-  background-color: #ff9999;
-  border-radius: 50%;
-`
 
 const MotionValue = () => {
   const x = useMotionValue(100)
@@ -41,9 +23,9 @@ const MotionValue = () => {
   ])
 
   return (
-    <div className="wrap" css={wrapCss}>
+    <div className={css.wrap}>
       <motion.button
-        css={basic}
+        className={css.basic}
         drag="x"
         dragConstraints={{ left: 0, right: 200 }}
         style={{ x }}

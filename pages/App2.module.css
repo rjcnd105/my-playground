@@ -1,0 +1,21 @@
+.sss {
+  background-color: #fff;
+
+  &:global.active {
+    font-size: 24px;
+  }
+  :global .ddd {
+    color: #00f;
+
+    .aaa {
+      background: #1ea7fd;
+    }
+  }
+  .not-global {
+
+  }
+}
+
+.sss.active {
+  transform: rotate(30deg);
+}
