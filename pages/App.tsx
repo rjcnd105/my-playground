@@ -6,7 +6,7 @@ import css2 from './App2.module.css'
 export default function App() {
   console.log(css2)
   return (
-    <div className={clsx('C_app', css2.sss, 'active')}>
+    <div className={clsx('page_app', css2.sss, 'active')}>
       <div className="hello">hello, react with vite2~~</div>
       <div className="ddd">
         dddddd
