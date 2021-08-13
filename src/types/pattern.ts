@@ -1,4 +1,7 @@
 // 값이 never이면 추출이 되지 않는다는 점을 잘 이용하라! 해당 매칭되는 타입을 제외할때 사용
+
+import { ComponentType } from 'react'
+
 /***
  * pattern: {}형태로 만든 후 []로 추출
  * 1. record 형태로 추출 후
@@ -41,3 +44,71 @@ export type UnionToIntersection<U> = (
   : never
 
 type D = UnionToIntersection<{ a: 20 } | { b: 30 }> // { a: 20 } & { b: 30 }
+
+/***
+ * Union -> Array
+ ***/
+type ValueOf<T> = T[keyof T]
+
+type NonEmptyArray<T> = [T, ...T[]]
+
+type MustInclude<T, U extends T[]> = [T] extends [ValueOf<U>] ? U : never
+
+const enumerate =
+  <T>() =>
+  <U extends NonEmptyArray<T>>(...elements: MustInclude<T, U>) =>
+    elements
+
+type Color = 'red' | 'blue'
+enumerate<Color>()('red', 'blue') // ✅ Good
+enumerate<Color>()('blue', 'red')
+
+/**
+ * Returns tuple types that include every string in union
+ * TupleUnion<keyof { bar: string; leet: number }>;
+ * ["bar", "leet"] | ["leet", "bar"];
+ */
+type TupleUnion<U extends string, R extends string[] = []> = {
+  [S in U]: Exclude<U, S> extends never
+    ? [...R, S]
+    : TupleUnion<Exclude<U, S>, [...R, S]>
+}[U] &
+  string[]
+
+interface Person {
+  firstName: string
+  lastName: string
+  dob: Date
+  hasCats: false
+}
+type keys = TupleUnion<keyof Person> //  ["firstName", "lastName", "dob", "hasCats"] | ... 22 more ... | [...]
+
+type UnionToTuple<T> = (
+  (T extends any ? (t: T) => T : never) extends infer U
+    ? (U extends any ? (u: U) => any : never) extends (v: infer V) => any
+      ? V
+      : never
+    : never
+) extends (_: any) => infer W
+  ? [...UnionToTuple<Exclude<T, W>>, W]
+  : []
+
+type Tuple = UnionToTuple<
+  | 2
+  | 1
+  | 3
+  | 5
+  | 10
+  | -9
+  | 100
+  | 1001
+  | 102
+  | 123456
+  | 100000000
+  | 'alice'
+  | 'charlie'
+>
+
+type PageComponent<T = {}> = {
+  onMount?(): void
+} & ComponentType<T>
