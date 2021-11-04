@@ -3,6 +3,7 @@ import axios from 'axios'
 import { nanoid } from 'nanoid'
 import { makeAutoObservable } from 'mobx'
 import { StudentColl } from '../StudentColl'
+import { BASE_URL } from '../constants'
 
 export module Student {
   export class Impl implements ImplTrait<Data> {
@@ -23,30 +24,20 @@ export module Student {
     }
   }
 
-  export const controller = {
-    fetch({ id }: Pick<Data, 'id'>) {
-      return axios.get<Data>(`${BASE_URL}/~`)
-    },
-    save<T extends res.Save>(id: Data['id'], data: T) {
-      axios.post(`${BASE_URL}/~`, data).then(() => {})
-    },
-    delete(id: Data['id']) {
-      axios.delete(`${BASE_URL}/${id}`)
-    },
-  }
-
-  const BASE_URL = 'https://aaaa.com' as const
-
-  namespace res {
-    export type Save = { name?: string; age?: number; phone?: string }
-  }
-
-  // util 어떤 식으로 할지..?
+  // util..? 어떤 식으로 할지..?
   export const utils = {
     update({ data }: DataK, updateData: Partial<Data>) {
       Object.assign(student.data, updateData)
     },
-    delete(id: Data['id'], targetColl: StudentColl.Impl) {},
+    delete(id: Data['id'], targetColl: StudentColl.Impl) {
+      targetColl.app.delete(id)
+    },
+  }
+
+  export namespace req {
+    export type Save = { name?: string; age?: number; phone?: string }
+    export type Delete = { id: Data['id'] }
+    export type Fetch = { id: Data['id'] }
   }
 
   export type DataK = {

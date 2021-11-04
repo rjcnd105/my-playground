@@ -60,8 +60,10 @@ const enumerate =
     elements
 
 type Color = 'red' | 'blue'
+
 enumerate<Color>()('red', 'blue') // ✅ Good
 enumerate<Color>()('blue', 'red')
+// enumerate<Color>()('blue') // Error
 
 /**
  * Returns tuple types that include every string in union
