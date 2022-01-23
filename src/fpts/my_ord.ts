@@ -9,6 +9,7 @@ import * as Ord from 'fp-ts/lib/Ord'
 import * as EQ from 'fp-ts/Eq'
 import * as N from 'fp-ts/number'
 import * as S from 'fp-ts/string'
+import * as Semi from 'fp-ts/Semigroup'
 import { Ordering } from 'fp-ts/Ordering'
 
 const numCompare = (x: number, y: number): Ordering => {
@@ -112,3 +113,10 @@ getUserForAgeClamp나영to가영(라영) /*?*/ // 가영
 //       return -1
 //   }
 // }
+
+
+const userOrdSemi = Ord.getSemigroup<User>()
+const myUserOrd = userOrdSemi.concat(userAgeOrd, userNameOrd)
+const myUserArr = [가영, 나영, 다영, 라영, 마영].sort(myUserOrd.compare)
+
+myUserArr /*?*/
