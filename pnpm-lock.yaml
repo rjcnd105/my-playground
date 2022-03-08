@@ -9,6 +9,7 @@ specifiers:
   axios-extensions: ^3.1.3
   clsx: ^1.1.1
   dataclass: ^2.0.0
+  date-fns: ^2.28.0
   eslint: ^7.30.0
   eslint-config-prettier: ^8.3.0
   eslint-plugin-prettier: ^3.4.1
@@ -41,6 +42,7 @@ dependencies:
   axios-extensions: 3.1.3_axios@0.24.0
   clsx: 1.1.1
   dataclass: 2.0.0
+  date-fns: 2.28.0
   eslint: 7.32.0
   fast-deep-equal: 3.1.3
   fp-ts: 2.11.8
@@ -2181,6 +2183,11 @@ packages:
 
   /dataclass/2.0.0:
     resolution: {integrity: sha512-XbxboeVjIS4TFtoNan/Hnjifda6zKYN4u5gJzK1qFBEgmB3Dyf2sGYvv5GbbO62fY7JjPe+PVbGEwgiiAGclWA==}
+    dev: false
+
+  /date-fns/2.28.0:
+    resolution: {integrity: sha512-8d35hViGYx/QH0icHYCeLmsLmMUheMmTyV9Fcm6gvNwdw31yXXH+O85sOBJ+OLnLQMKZowvpKb6FgMIQjcpvQw==}
+    engines: {node: '>=0.11'}
     dev: false
 
   /debug/4.3.3:
