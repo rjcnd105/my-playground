@@ -81,11 +81,18 @@ type D = UnionToIntersection<{ a: 20 } | { b: 30 }>
 
 const d = typeSafeAssign({ a: 20, b: 30 }, { c: 30 })
 const d2 = typeSafeAssign(1, 's')
-// collection
-// export type Collection<
-//   T extends Dictionary<K, V>,
-//   K extends keyof T,
-//   V extends ValueOf<T>
-// > = T[]
-//
-// const dic: Dictionary = { a: 30, b: 22 }
+
+export type AwaitedReturn<T extends (...args: any[]) => Promise<any>> = Awaited<
+    ReturnType<T>
+    >
+
+// string literal인 경우에 true
+// type r1 = IdentifiableString<'aaa'> // true
+// type r2 = IdentifiableString<string> // false
+// type r3 = IdentifiableString<'a' | 'b'> // true
+export type IdentifiableString<T> = T extends string
+    ? string extends T
+        ? false
+        : true
+    : false
+
