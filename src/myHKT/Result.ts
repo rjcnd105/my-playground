@@ -1,40 +1,52 @@
-import { Kind } from './HKT'
+import {Struct} from "./common";
 
 export const URI = 'Result'
 export type URI = typeof URI
 
-export interface Err<A> {
-    readonly _tag: 'Err'
-    readonly value: A
+class Err<A> implements Struct<'Err'> {
+    readonly _tag = 'Err'
+
+    constructor(public readonly value: A) {
+    }
 }
-export interface Ok<A> {
-    readonly _tag: 'Ok'
-    readonly value: A
+
+class Ok<A> implements Struct<'Ok'> {
+    readonly _tag = 'Ok'
+
+    constructor(public readonly value: A) {
+    }
 }
 
 export type Result<A> = Err<A> | Ok<A>
 
-export const err = <A>(v: A): Err<A> => {
-    return {
-        get _tag() { return 'Err' as const },
-        get value() { return v }
+export function isEq(t1: Result<any>) {
+    return (t2: Result<any>) => {
+        if (t1._tag !== t2._tag) return false
+        return t1.value === t2.value;
     }
 }
-export const ok = <A>(v: A): Ok<A> => {
-    return {
-        get _tag() { return 'Ok' as const },
-        get value() { return v }
-    }
+
+export function isErr(t: Struct<any>): t is Struct<'Err'> {
+    return t._tag === 'Err'
 }
+
+export function isOk(t: Struct<any>): t is Struct<'Ok'> {
+    return t._tag === 'Ok'
+}
+
+export function errorThrown<T>(r: Result<T>) {
+    if (isErr(r)) throw Error
+    return r
+}
+
+export function unwrap<T>(r: Result<T>) {
+    return r.value
+}
+
 
 declare module "./HKT" {
     interface URItoKind<A> {
         [URI]: Result<A>
     }
-}
-
-// constructor
-export class From {
-
 }
 

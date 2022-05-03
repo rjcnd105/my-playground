@@ -1,8 +1,8 @@
 // object 값들의 타입을 추출
 import { typeSafeAssign } from '../../utils'
 
-export type Constructor<T = any, argT extends any[] = any[]> = new (
-  ...args: [...argT]
+export type Constructor<T = { }> = new (
+  ...args: any[]
 ) => T
 
 export type AbstractConstructor<

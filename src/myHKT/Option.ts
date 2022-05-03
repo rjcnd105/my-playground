@@ -1,15 +1,12 @@
-import {URIS} from "./HKT";
-import * as Result from './Result'
+import {Struct} from "./common";
 
 export const URI = 'Option'
 export type URI = typeof URI
 
-export interface None {
-    readonly _tag: 'None'
+export interface None extends Struct<"None"> {
 }
 
-export interface Some<A> {
-    readonly _tag: 'Some'
+export interface Some<A> extends Struct<"Some"> {
     readonly value: A
 }
 
