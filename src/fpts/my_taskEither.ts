@@ -1,5 +1,6 @@
 import * as TE from 'fp-ts/lib/TaskEither'
 import * as E from 'fp-ts/lib/Either'
+import * as O from 'fp-ts/lib/Option'
 import { flow, pipe } from 'fp-ts/lib/function'
 import axios from 'axios'
 
@@ -44,6 +45,18 @@ const bbb = new Blob([JSON.stringify({ name: 'gggruru' })], {
 })
 
 async function test() {
+  // console.log(
+  //   pipe(
+  //     O.none,
+  //     O.map((n) => n * 2)
+  //   ),
+  //
+  //   pipe(
+  //     O.some(10),
+  //     O.map((n) => n * 2), // Some인 경우에 적용시킴
+  //     O.filter((n) => n > 100) // 조건에 맞지 않으면 None
+  //   )
+  // )
   // ##Rule1
   // TaskEither의 tryCatch를 이용하여 promise를 task로 변환하라.
 
@@ -51,7 +64,7 @@ async function test() {
     () => axios.get('https://jsonplaceholder.typicode.com/todos/1'),
     E.toError
   )
-  console.log('myTask', myTask)
+  console.log('task data', await myTask())
 
   const myChain = TE.chain((response: Response) =>
     TE.tryCatch(() => response.json(), E.toError)
@@ -79,7 +92,6 @@ async function test() {
 
   // pipe, flow의 좋은 점은 함수와 값을 다 미리 넘기기 때문에 타입추론(ReturnType)을 다 해두어 일일히 타입 선언을 하지 않아도 됌
   // pipe는 초기 인자 값을 넣고 시작하는거라 볼 수 있음
-  console.log('=>(my_taskEither.ts:82) ')
   const mypipe = pipe(
     10,
     (n: number): number => n * 10,

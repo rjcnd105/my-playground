@@ -8,8 +8,7 @@
  * 그리고 여러 iterator, 다른 인터페이스와 상호작용으로 훨신 강력하게 사용할 수 있다.
  * */
 
-import * as Opt from 'fp-ts/Option'
-import * as assert from 'assert'
+import * as Opt from 'fp-ts/lib/Option'
 import { pipe } from 'fp-ts/lib/function'
 
 /*** Constructor ***/
@@ -111,8 +110,8 @@ f(14) /*?*/ // some(28)
 /*** instance ***/
 // Option => Other Instance
 
-import * as N from 'fp-ts/number'
-import { Option } from 'fp-ts/Option'
+import * as N from 'fp-ts/lib/number'
+import { Option } from 'fp-ts/lib/Option'
 
 /* getEq(Eq) */
 // Option을 비교하는 Eq(비교기) 인스턴스를 만듬
@@ -148,3 +147,16 @@ const graterThan1 = Opt.exists((n: number) => n >= 1)
 graterThan1(Opt.some(3)) /*?*/ // true
 graterThan1(Opt.some(0)) /*?*/ // false
 graterThan1(Opt.none) /*?*/ // false
+
+// console.log(
+//   pipe(
+//     O.none,
+//     O.map((n) => n * 2)
+//   ),
+//
+//   pipe(
+//     O.some(10),
+//     O.map((n) => n * 2), // Some인 경우에 적용시킴
+//     O.filter((n) => n > 100) // 조건에 맞지 않으면 None
+//   )
+// )
