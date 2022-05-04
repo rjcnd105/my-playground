@@ -1,4 +1,4 @@
-lockfileVersion: 5.3
+lockfileVersion: 5.4
 
 specifiers:
   '@babel/core': ^7.17.10
@@ -27,6 +27,8 @@ specifiers:
   react: ^18.1.0
   react-dom: ^18.1.0
   react-query: ^3.38.1
+  react-router: ^6.3.0
+  react-router-dom: ^6.3.0
   rxjs: ^7.5.5
   storybook-css-modules-preset: ^1.1.1
   ts-mixer: ^6.0.1
@@ -44,15 +46,17 @@ dependencies:
   eslint: 8.14.0
   fast-deep-equal: 3.1.3
   fp-ts: 2.12.1
-  framer-motion: 6.3.3_react-dom@18.1.0+react@18.1.0
+  framer-motion: 6.3.3_ef5jwxihqo6n7gxfmzogljlgcm
   glob: 8.0.1
   gsap: 3.10.4
   mobx: 6.5.0
   postcss: 8.4.13
-  postcss-loader: 6.2.1_postcss@8.4.13+webpack@5.72.0
+  postcss-loader: 6.2.1_g4najheu5gwop3kphiif6aqpde
   react: 18.1.0
   react-dom: 18.1.0_react@18.1.0
-  react-query: 3.38.1_react-dom@18.1.0+react@18.1.0
+  react-query: 3.38.1_ef5jwxihqo6n7gxfmzogljlgcm
+  react-router: 6.3.0_react@18.1.0
+  react-router-dom: 6.3.0_ef5jwxihqo6n7gxfmzogljlgcm
   rxjs: 7.5.5
   ts-mixer: 6.0.1
   type-fest: 2.12.2
@@ -65,7 +69,7 @@ devDependencies:
   '@types/react': 18.0.8
   '@types/react-dom': 18.0.3
   eslint-config-prettier: 8.5.0_eslint@8.14.0
-  eslint-plugin-prettier: 4.0.0_665eb419c9d7860ca0c224f7f6dcdace
+  eslint-plugin-prettier: 4.0.0_mzpligoj26dazigcet37nxg2zy
   postcss-nested: 5.0.6_postcss@8.4.13
   postcss-preset-env: 7.5.0_postcss@8.4.13
   prettier: 2.6.2
@@ -377,6 +381,7 @@ packages:
 
   /@emotion/is-prop-valid/0.8.8:
     resolution: {integrity: sha512-u5WtneEAr5IDG2Wv65yhunPSMLIpuKsbuOktRojfrEiEvRyC85LgPMZI63cr7NUqT8ZIGdSVg8ZKGxIug4lXcA==}
+    requiresBuild: true
     dependencies:
       '@emotion/memoize': 0.7.4
     dev: false
@@ -1199,7 +1204,7 @@ packages:
       eslint: 8.14.0
     dev: true
 
-  /eslint-plugin-prettier/4.0.0_665eb419c9d7860ca0c224f7f6dcdace:
+  /eslint-plugin-prettier/4.0.0_mzpligoj26dazigcet37nxg2zy:
     resolution: {integrity: sha512-98MqmCJ7vJodoQK359bqQWaxOE0CS8paAz/GgjaZLyex4TTk3g9HugoO89EqWCrFiOqn9EVvcoo7gZzONCWVwQ==}
     engines: {node: '>=6.0.0'}
     peerDependencies:
@@ -1401,7 +1406,7 @@ packages:
     resolution: {integrity: sha512-MhLuK+2gUcnZe8ZHlaaINnQLl0xRIGRfcGk2yl8xoQAfHrSsL3rYu6FCmBdkdbhc9EPlwyGHewaRsvwRMJtAlA==}
     dev: true
 
-  /framer-motion/6.3.3_react-dom@18.1.0+react@18.1.0:
+  /framer-motion/6.3.3_ef5jwxihqo6n7gxfmzogljlgcm:
     resolution: {integrity: sha512-wo0dCnoq5vn4L8YVOPO9W54dliH78vDaX0Lj+bSPUys6Nt5QaehrS3uaYa0q5eVeikUgtTjz070UhQ94thI5Sw==}
     peerDependencies:
       react: '>=16.8 || ^17.0.0 || ^18.0.0'
@@ -1521,6 +1526,12 @@ packages:
 
   /hey-listen/1.0.8:
     resolution: {integrity: sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q==}
+    dev: false
+
+  /history/5.3.0:
+    resolution: {integrity: sha512-ZqaKwjjrAYUYfLG+htGaIIZ4nioX2L70ZUMIFysS3xvBsSG4x/n1V6TXV3N8ZYNuFGlDirFg32T7B6WOUPDYcQ==}
+    dependencies:
+      '@babel/runtime': 7.17.9
     dev: false
 
   /ignore/5.2.0:
@@ -2003,7 +2014,7 @@ packages:
       postcss-value-parser: 4.2.0
     dev: true
 
-  /postcss-loader/6.2.1_postcss@8.4.13+webpack@5.72.0:
+  /postcss-loader/6.2.1_g4najheu5gwop3kphiif6aqpde:
     resolution: {integrity: sha512-WbbYpmAaKcux/P66bZ40bpWsBucjx/TTgVVzRZ9yUO8yQfVBlameJ0ZGVaPfH64hNSBh63a+ICP5nqOpBA0w+Q==}
     engines: {node: '>= 12.13.0'}
     peerDependencies:
@@ -2228,7 +2239,7 @@ packages:
       scheduler: 0.22.0
     dev: false
 
-  /react-query/3.38.1_react-dom@18.1.0+react@18.1.0:
+  /react-query/3.38.1_ef5jwxihqo6n7gxfmzogljlgcm:
     resolution: {integrity: sha512-CM9hsz6oib17hsBguGaMJr+a0swMzou2gvNHHjAusnXvkfTx6CTzx0Iwuplox1jI2j3WiY91BGrcIN6bp1n1Iw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -2245,6 +2256,27 @@ packages:
       match-sorter: 6.3.1
       react: 18.1.0
       react-dom: 18.1.0_react@18.1.0
+    dev: false
+
+  /react-router-dom/6.3.0_ef5jwxihqo6n7gxfmzogljlgcm:
+    resolution: {integrity: sha512-uaJj7LKytRxZNQV8+RbzJWnJ8K2nPsOOEuX7aQstlMZKQT0164C+X2w6bnkqU3sjtLvpd5ojrezAyfZ1+0sStw==}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      history: 5.3.0
+      react: 18.1.0
+      react-dom: 18.1.0_react@18.1.0
+      react-router: 6.3.0_react@18.1.0
+    dev: false
+
+  /react-router/6.3.0_react@18.1.0:
+    resolution: {integrity: sha512-7Wh1DzVQ+tlFjkeo+ujvjSqSJmkt1+8JO+T5xklPlgrh70y7ogx75ODRW0ThWhY7S+6yEDks8TYrtQe/aoboBQ==}
+    peerDependencies:
+      react: '>=16.8'
+    dependencies:
+      history: 5.3.0
+      react: 18.1.0
     dev: false
 
   /react/18.1.0:

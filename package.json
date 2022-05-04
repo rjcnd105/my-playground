@@ -20,6 +20,8 @@
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-query": "^3.38.1",
+    "react-router": "^6.3.0",
+    "react-router-dom": "^6.3.0",
     "rxjs": "^7.5.5",
     "ts-mixer": "^6.0.1",
     "type-fest": "^2.12.2",
