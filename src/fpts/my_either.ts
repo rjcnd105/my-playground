@@ -7,4 +7,30 @@
  * 실패에 대한 대안이 필요할때 Either을 사용함.
  ***/
 
+import * as E from 'fp-ts/Either'
+import { pipe } from 'fp-ts/lib/function'
+
 export {}
+
+const number10배 = (v: number) => v * 10
+const number100배 = (v: number) => v * 100
+
+const apEx = E.ap(E.of(10))
+
+/* ap */
+// 값이 먼저고, 함수는 나중이므로 결정된 값에 대한 처리를 유연하게 바꿀 수 있음.
+// 체이닝에 유용함
+apEx(E.of(number10배)) /*?*/ // Right 100
+apEx(E.of(number100배)) /*?*/ // Right 1000
+
+const result = pipe(
+  E.of((dollar: number) => (name: string) => `${name} money: ${dollar * 1250}원`),
+  E.ap(E.of(100)),
+  E.ap(E.of("hjs"))
+)
+result /*?*/ // "hjs money: 125000원"
+
+/* map */
+// 함수가 먼저고 값은 나중이므로 결정된 함수에 대해 input 값을 유연하게 바꿀 수 있음.
+const mapEx = E.map(number10배) 
+mapEx(E.right(10)) /*?*/ // Right 100
