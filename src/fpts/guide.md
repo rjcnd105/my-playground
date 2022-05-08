@@ -13,8 +13,7 @@
 **map:** 함수를 받아 값에 적용시킴 - Functor의 구현  
 **ap:** 유형 내에 함수를 받아 값에 적용시킴 map의 역순과도 같음 - Apply의 구현  
 **of:** lifting, Functor로 들어 올림 - Pointed의 구현  
-**chain:** 현재 유형으로부터 함수를 거쳐 현재 유형을 리턴함.  
-map, ap와 같이 값이(ex: Either의 left) 통과하지 않으므로 통합적인 재처리에 유용 - Chain의 구현  
+**chain:** 현재 유형으로부터 함수를 거쳐 현재 유형을 리턴함. map, ap와 같이 값이(ex: Either의 left) 통과하지 않으므로 통합적인 재처리에 유용 - Chain의 구현  
 **Do:** 해당 유형의 빈 값을 생성
 
 
@@ -43,7 +42,11 @@ map, ap와 같이 값이(ex: Either의 left) 통과하지 않으므로 통합적
 
 **Monad&lt;N...&gt;**  
 자기사상 Functor Monoid.   
-```chain```을 제공
+```chain(flatmap), of, map, ap```을 제공  
+_monadic laws_(모노이드의 법칙과도 같음)  
+- Left Identity: of(x).chain(f) == of(f(x))  
+- Right Identity: of(x).chain(of) = of(x)  
+- Associativity: of(x).chain(f).chain(g) = of(x).chain(flow(f, g))  
 
 **Pointed<N...>**  
 lifting 함수인 ```of```를 제공.
@@ -71,3 +74,13 @@ Semigroup에 추가로 empty(항등원) 피라미터를 가지고 있다.
 concat으로 항등원을 결합하면 입력 값이 그대로 나옴을 약속한다.  
 연산의 초기값의 역활로써 쓰이기도 한다. (ex: 더하기의 경우 0, 곱하기의 경우 1)
 
+
+
+
+---
+### 추가 설명
+**Option을 예로 Monad의 구성 함수 한번에 보기**  
+of: &lt;A&gt;(a: A)  
+map: &lt;A, B&gt;(fa: Option&lt;A&gt;, f: (a: A) =&gt; B)  
+chain: &lt;A, B&gt;(fa: Option&lt;A&gt;, f: (a: A) =&gt; Option&lt;B&gt;)  
+ap: &lt;A, B&gt;(fab: Option&lt;(a: A) =&gt; B&gt;, fa: Option&lt;A&gt;)  

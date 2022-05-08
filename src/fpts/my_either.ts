@@ -7,7 +7,8 @@
  * 실패에 대한 대안이 필요할때 Either을 사용함.
  ***/
 
-import * as E from 'fp-ts/Either'
+import * as E from 'fp-ts/lib/Either'
+import * as T from 'fp-ts/lib/Task'
 import { pipe } from 'fp-ts/lib/function'
 
 export {}
@@ -34,3 +35,19 @@ result /*?*/ // "hjs money: 125000원"
 // 함수가 먼저고 값은 나중이므로 결정된 함수에 대해 input 값을 유연하게 바꿀 수 있음.
 const mapEx = E.map(number10배) 
 mapEx(E.right(10)) /*?*/ // Right 100
+
+
+const d = E.Do
+
+
+const print = (s: string): T.Task<void> => () => Promise.resolve(console.log(s))
+declare const readLine: T.Task<string>
+
+const mainDo: T.Task<{ x: string, y: string }> = pipe(
+  T.Do,
+  T.bind('x', () => readLine),
+  T.bind('y', () => readLine),
+  T.chainFirst(({ x }) => print(x)),
+  T.chainFirst(({ y }) => print(y)),
+)
+T.bind('x', () => readLine) /*?*/
