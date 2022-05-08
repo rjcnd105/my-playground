@@ -1,5 +1,5 @@
 ### 목차 항목
-<font size="2" color="#888">코드 내부는 전부 예제</font>
+<font size="2" color="#888">목차의 코드는 전부 example</font>
 
 **constructors:** 다른 유형에서 해당 유형으로의 변환, 또는 lifting  ```B<A> -> F<A>```, ```A -> F<A>```  
 **combinators:** 유형 타입 결합자들  ```F<A> + F<B> -> F<A | B>```  
@@ -37,7 +37,16 @@
 [Dependence Injector로 많이 사용됌](https://dev.to/gcanti/getting-started-with-fp-ts-reader-1ie5)  
 R -> A
 
-**Semigroup&lt;A&gt;**  
-항등원이 없는 동일 유형 결합자(있으면 Monoid)  
+**Magma&lt;A&gt;**
+유형 결합자
 내부에 ```concat(a1: A, a2: A) -> A```를 가지고 있음
+
+**Semigroup&lt;A&gt;**  
+Magma랑 구현이 같으나, semigroup은 Associativity(결합법칙)을 준수하는 유형  
+즉 ```concat(x, concat(y, z)) === concat(concat(x, y), z)```이 성립해야 semigroup이다.
+
+**Monoid&lt;A&gt;**  
+Semigroup에 추가로 empty(항등원) 피라미터를 가지고 있다.  
+concat으로 항등원을 결합하면 입력 값이 그대로 나옴을 약속한다.  
+연산의 초기값의 역활로써 쓰이기도 한다. (ex: 더하기의 경우 0, 곱하기의 경우 1)
 
