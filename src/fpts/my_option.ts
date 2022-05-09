@@ -8,8 +8,7 @@
  * 그리고 여러 iterator, 다른 인터페이스와 상호작용으로 훨신 강력하게 사용할 수 있다.
  * */
 
-import * as Opt from 'fp-ts/lib/Option'
-import * as OptT from 'fp-ts/lib/OptionT'
+import * as O from 'fp-ts/lib/Option'
 import * as TO from 'fp-ts/lib/TaskOption'
 import * as T from 'fp-ts/lib/Task'
 import { pipe } from 'fp-ts/lib/function'
@@ -20,12 +19,12 @@ import { pipe } from 'fp-ts/lib/function'
 // * None의 인스턴스는 none
 // * Some의 인스턴스는 some
 // * isSome, isNone으로 체크 가능
-Opt.some(1) /*?*/
-Opt.none /*?*/
+O.some(1) /*?*/
+O.none /*?*/
 
 /* fromPredicate */
 // 조건식에 통과되면 some(통과된 value) 아니면 none인 함수를 반환
-const greaterThen10 = Opt.fromPredicate((d: number) => d > 10)
+const greaterThen10 = O.fromPredicate((d: number) => d > 10)
 
 greaterThen10(15) // some(15)
 greaterThen10(5) // none
@@ -35,36 +34,36 @@ greaterThen10(5) // none
 // 바인딩된 값이 none인 경우 어떤 함수던 none
 // some인 경우에만 처리됨
 
-const apN3 = Opt.ap(Opt.some(3))
-const apNone = Opt.ap(Opt.none)
-apN3(Opt.none) /*?*/
-apN3(Opt.some((n) => n * 10)) /*?*/
-apN3(Opt.some((n) => (n < 5 ? 0 : 10))) /*?*/ // 0
-apNone(Opt.some((v) => 10)) /*?*/ // none
-apNone(Opt.some((n) => n * 10)) /*?*/ // none
+const apN3 = O.ap(O.some(3))
+const apNone = O.ap(O.none)
+apN3(O.none) /*?*/
+apN3(O.some((n) => n * 10)) /*?*/
+apN3(O.some((n) => (n < 5 ? 0 : 10))) /*?*/ // 0
+apNone(O.some((v) => 10)) /*?*/ // none
+apNone(O.some((n) => n * 10)) /*?*/ // none
 
 /*** destructors ***/
 
 /* match(onNone, onSome) */
 // none일때와 some일때와 분기 처리.
-const matchOption = Opt.match(
+const matchOption = O.match(
   () => 'a none',
   (a) => `a some containing ${a}`
 )
-matchOption(Opt.some(10)) /*?*/ // a some containing 10
-matchOption(Opt.none) /*?*/ // a none
+matchOption(O.some(10)) /*?*/ // a some containing 10
+matchOption(O.none) /*?*/ // a none
 
 /* getOrElse(onNone) */
 // some이 있으면 some의 값을, none이면 onNone의 리턴 값을 줌
-const getOrElseFn = Opt.getOrElse(() => 'hoejun')
-getOrElseFn(Opt.some('kang')) /*?*/ // kang
-getOrElseFn(Opt.some('im')) /*?*/ // im
-getOrElseFn(Opt.none) /*?*/ // hoejun
+const getOrElseFn = O.getOrElse(() => 'hoejun')
+getOrElseFn(O.some('kang')) /*?*/ // kang
+getOrElseFn(O.some('im')) /*?*/ // im
+getOrElseFn(O.none) /*?*/ // hoejun
 
 /*** Guards ***/
 
-Opt.isSome(Opt.some(1)) /*?*/ // => true
-Opt.isNone(Opt.none) /*?*/ // => true
+O.isSome(O.some(1)) /*?*/ // => true
+O.isNone(O.none) /*?*/ // => true
 
 /*** interop ***/
 
@@ -72,18 +71,18 @@ Opt.isNone(Opt.none) /*?*/ // => true
 // null, undefined => none
 // value => some(value)
 
-Opt.fromNullable(undefined) /*?*/ // none
-Opt.fromNullable(null) /*?*/ // none
-Opt.fromNullable(10) /*?*/ // some(10)
-Opt.fromNullable('hi') /*?*/ // some(hi)
+O.fromNullable(undefined) /*?*/ // none
+O.fromNullable(null) /*?*/ // none
+O.fromNullable(10) /*?*/ // some(10)
+O.fromNullable('hi') /*?*/ // some(hi)
 
 /* toNullable, toUndefined */
-Opt.toNullable(Opt.none) /*?*/ // null
-Opt.toUndefined(Opt.none) /*?*/ // undefined
+O.toNullable(O.none) /*?*/ // null
+O.toUndefined(O.none) /*?*/ // undefined
 
 /* fromNullableK(f) */
 // fromNullable의 고차함수 버전
-const stringOptionFn = Opt.fromNullableK((v) =>
+const stringOptionFn = O.fromNullableK((v) =>
   typeof v === 'string' ? v : null
 )
 stringOptionFn(10) /*?*/ // none
@@ -92,16 +91,16 @@ stringOptionFn('hihi') /*?*/ // some('hihi')
 /* tryCatch(f) */
 // throw 되면 none, 아니면 반환된 값(v)이 some(v)
 
-Opt.tryCatch(() => {
+O.tryCatch(() => {
   throw new Error()
 }) /*?*/ // none
-Opt.tryCatch(() => {
+O.tryCatch(() => {
   return 10
 }) /*?*/ // some(10)
 
 /* tryCatchK(f)(v) */
 // tryCatch의 고차함수 버전
-const f = Opt.tryCatchK((v: number) => {
+const f = O.tryCatchK((v: number) => {
   if (v < 10) {
     throw Error()
   }
@@ -120,10 +119,10 @@ import { Option } from 'fp-ts/lib/Option'
 // Option을 비교하는 Eq(비교기) 인스턴스를 만듬
 
 // 이러면 이제 Eq<Option<number>>가 됨
-const numEq = Opt.getEq(N.Eq)
-numEq.equals(Opt.some(10), Opt.some(1)) /*?*/ // false
-numEq.equals(Opt.some(10), Opt.none) /*?*/ // false
-numEq.equals(Opt.some(5), Opt.some(5)) /*?*/ // true
+const numEq = O.getEq(N.Eq)
+numEq.equals(O.some(10), O.some(1)) /*?*/ // false
+numEq.equals(O.some(10), O.none) /*?*/ // false
+numEq.equals(O.some(5), O.some(5)) /*?*/ // true
 
 /*** Model ***/
 
@@ -139,17 +138,16 @@ numEq.equals(Opt.some(5), Opt.some(5)) /*?*/ // true
 /*** Utils ***/
 
 /* Do */
-// 뭐하는 앤지 모르겠음..
-Opt.Do /*?*/ // some({})
+O.Do /*?*/ // some({})
 
 /* exists(f)(v) */
 // pred를 받은 후 Option을 받아 some안의 value를 검증함
 
-const graterThan1 = Opt.exists((n: number) => n >= 1)
+const graterThan1 = O.exists((n: number) => n >= 1)
 
-graterThan1(Opt.some(3)) /*?*/ // true
-graterThan1(Opt.some(0)) /*?*/ // false
-graterThan1(Opt.none) /*?*/ // false
+graterThan1(O.some(3)) /*?*/ // true
+graterThan1(O.some(0)) /*?*/ // false
+graterThan1(O.none) /*?*/ // false
 
 // console.log(
 //   pipe(
@@ -171,5 +169,11 @@ pipe(TO.of('hihi'), TO.match(() => 0, (str) => str.length))() /*?*/
 
 // T.Task<number>
 pipe(TO.of('hihi'), TO.matchE(() => T.of(0), (str) => T.of(str.length)))() /*?*/
+
+
+
+O.chainFirst((a: number) => (a % 2 === 0 ? O.some(a) : O.none))(O.some(1)); // => { _tag: 'None' }
+O.chainFirst((a: number) => (a % 2 === 0 ? O.some(a * 2) : O.none))(O.some(2)); // => { _tag: 'Some', value: 2 }
+O.chainFirst((a: number) => (a % 2 === 0 ? O.some(a) : O.none))(O.none); // => { _tag: 'None' }
 
 

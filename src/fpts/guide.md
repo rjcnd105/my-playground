@@ -16,14 +16,18 @@
 **of:** 순수한 값을 통해 유형 생성자로 lifting - Pointed의 구현  
 **chain:** 현재 유형 생성자로부터 함수를 거쳐 현재 유형 생성자를 리턴함. map, ap와 같이 값이(ex: Either의 left) 통과하지 않으므로 통합적인 재처리에 유용 - Chain의 구현  
 **Do:** 해당 유형 생성자의 빈 값을 생성.[ Monad를 chain하는 자기 사상을 사용할때 sugar 역할로 많이 쓰임.](https://gcanti.github.io/fp-ts/guides/do-notation.html)
+**duplicate:** 유형 생성자를 중첩시킨다.  
+**fold:** 유형 생성자 내부의 값을 반환. 단, 반환 유형이 같아야 한다. (ex: none => "none", some(v) => "v: ${v}")  
+**foldW:** 유형 생성자 내부의 값을 반환, 반환 유형이 같을 필요가 없다. (ex: none => 0, some(v) => "v: ${v}"가 가능)  
+**match:** fold와의 차이는 Effect하지 않다는 것. matchE를 사용하면 fold와 같다. fold가 Effect하지 않은 유형 생성자의 경우는 match와 fold가 같다.  
 
 ---
 ### 접미사 
 **W:** Less strict version. 더 나은 타입 추론을 위해 사용할 수도 있음.  
-**S:**    
+**S:** Sequence의 약어.   
 **K:** Kleisli의 약어. ```A -> F<B>``` 와 같은 서명을 지님   
 **T:** Transformer의 약어. 모나드 변환기를 의미. 그러나 sequenceT에서의 T는 Tuple을 의미한다.     
-**E:** Effect의 약어. 함수형 프로그래밍에서의 Effect는 모델링된 값을 의미한다. 즉 T가 F&lt;T&gt;처럼 F라는 모델링안에 감싸여져 있는 것을 말함. [참고](https://www.reddit.com/r/hascalator/comments/ald8qs/what_is_functional_effect/)
+**E:** Effect의 약어. 함수형 프로그래밍에서의 Effect는 모델링된 값을 의미한다. 즉 T가 F&lt;T&gt;처럼 F라는 모델링안에 감싸여져 있는 것을 말함. [참고](https://www.reddit.com/r/hascalator/comments/ald8qs/what_is_functional_effect/)  
 **C:** Constrained의 약어. 제약을 의미함.
 ```typescript
 const getFunctor = <E>(S: Semigroup<E>): Functor2C<"Validation", E> = { ... }
