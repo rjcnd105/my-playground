@@ -12,18 +12,23 @@
 ### 메소드
 **map:** 함수를 받아 유형 내의 값에 적용시킴 - Functor의 구현  
 **ap:** 유형 내에 함수를 받아 값에 적용시킴 map의 역순과도 같음 - Apply의 구현  
-**of:** lifting, Functor로 들어 올림 - Pointed의 구현  
+**of:** 순수한 값을 통해 유형으로 lifting - Pointed의 구현  
 **chain:** 현재 유형으로부터 함수를 거쳐 현재 유형을 리턴함. map, ap와 같이 값이(ex: Either의 left) 통과하지 않으므로 통합적인 재처리에 유용 - Chain의 구현  
 **Do:** 해당 유형의 빈 값을 생성.[ Monad를 chain하는 자기 사상을 사용할때 sugar 역할로 많이 쓰임.](https://gcanti.github.io/fp-ts/guides/do-notation.html)
 
 
 ---
 ### 접미사 
-**W:** Less strict version  
+**[0-9]:** 
+**W:** Less strict version. 더 나은 타입 추론을 위해 사용할 수도 있음.
 **S:**   
 **K:**  
 **T:**    
-**C:** Curry의 약어
+**C:** 제약을 의미함.
+```typescript
+const getFunctor = <E>(S: Semigroup<E>): Functor2C<"Validation", E> = { ... }
+// Validation은 실패 부분에 대해 Semigroup 인스턴스를 제공하는 경우에만 Functor 인스턴스를 허용한다.
+```
 
 
 [//]: # (---)
@@ -57,6 +62,7 @@ T: ```Some<A> | None```
 
 **Either&lt;E, A&gt;**  
 실패(```left<E>```) or 성공(```right<A>```)  
+```Either<never, A>``` 처럼 사용시 실패할 수 없는 Either이다.
 T: ```Left<E> | Right<A>```
 
 **Reader&lt;R, A&gt;**  
@@ -92,7 +98,8 @@ T: ```() -> A```
 **Task&lt;A&gt;**  
 비동기 작업, Lazy Promise&lt;A&gt;, Promise는 순수하지 않고 참조 불투명하여 Task라는 통으로 Promise라는 내용물을 감싼다.  
 이로써 내부적으로는 side effect를 처리하지만 이를 lazy하게 처리함으로써 순수함을 얻는다.
-실패가 존재하지 않는다.
+실패가 존재하지 않는다.  
+실패가 존재하지 않음을 확실히 알고 있을 때에만 Task를 쓰며, 아닐 경우 TaskEither을 사용하라.  
 T: ```() -> Promise<A>```
 
 
@@ -114,15 +121,86 @@ T: ```R -> () -> Promise<A>```
 **ReaderTaskEither&lt;R, E, A&gt;**  
 Reader(DI) + Task(async) + Either(can fail)  
 이 사례가 굉장히 많아서, 일상적인 프로그래밍에 굉장히 많이 쓰임.  
+Reader로 값을 주입하고 나서 TaskEither가 반환되기 때문에 이를 가지고 여러 체이닝을 할 수 있다.  
 T: ```R -> () -> Promise<Either<E, A>>```
 
 
 
 
 ---
-### 추가 설명
-**Option을 예로 Monad의 구성 함수 한번에 보기**  
+### Useful info
+**Option Monad를 예로 Monad의 구성 함수 한번에 보기**  
 of: &lt;A&gt;(a: A)  
 map: &lt;A, B&gt;(fa: Option&lt;A&gt;, f: (a: A) =&gt; B)  
 chain: &lt;A, B&gt;(fa: Option&lt;A&gt;, f: (a: A) =&gt; Option&lt;B&gt;)  
-ap: &lt;A, B&gt;(fab: Option&lt;(a: A) =&gt; B&gt;, fa: Option&lt;A&gt;)  
+ap: &lt;A, B&gt;(fab: Option&lt;(a: A) =&gt; B&gt;, fa: Option&lt;A&gt;)
+
+**ReaderTaskEither 활용 예**
+- ReaderTaskEither에서 의존성 주입에 상관 없는 TaskEither로의 사용  
+```ReaderTaskEither<unknown, E, A>``` 처럼 사용하면 된다.  
+아무 의존성 주입 없이 호출하면 아무 손실 없이 TaskEither가 반환된다.
+
+
+```typescript
+import * as RTE from 'fp-ts/lib/ReaderTaskEither'
+```
+
+- From pure value
+```typescript
+var myRTE1: ReaderTaskEither<unknown, never, number> = RTE.of(42)
+// 이 경우 right로 받는게 타입 추론이 더 잘 됌
+var myRTE1 = RTE.right(42) // ReaderTaskEither<unknown, never, number>
+```
+
+- From pure value to RTE left
+```typescript
+const myRTE = RTE.left({ message: 'Fail!' }) 
+```
+
+- From Task
+```typescript
+const myTaskA: Task<number> = () => Promise.resolve(42)
+const myTaskE: Task<{ message: string }> = () =>
+  Promise.resolve({ message: 'Fail' })
+
+const myRTE1 = RTE.rightTask(myTaskA) // ReaderTaskEither<unknown, never, number>
+const myRTE2 = RTE.leftTask(myTaskE) // ReaderTaskEither<unknown, { message: string }, never>
+```
+
+- From Promise
+```typescript
+const myTaskEitherGood: TE.TaskEither<
+  { message: string },
+  number
+> = TE.tryCatch(
+  () =>
+    new Promise<number>((resolve, reject) => {
+      setTimeout(() => {
+        resolve(42)
+      }, 100)
+    }),
+  (e: any) => ({ message: 'Oops' }), // Or do some runtime inspection of `e` to try to figure out what it is :(
+)
+
+const myTaskEitherBad: TE.TaskEither<{ message: string }, number> = TE.tryCatch(
+  () =>
+    new Promise<number>((resolve, reject) => {
+      setTimeout(() => {
+        reject('Yolo') // Promise can be rejected with any value
+      }, 100)
+    }),
+  (e: any) => {
+    return e === 'Yolo' ? { message: 'Fail' } : { message: 'I have no idea' }
+  },
+)
+```
+
+- map
+```typescript
+pipe(
+  RTE.right(42),
+  RTE.map((n: number) => n.toString()),
+)
+```
+- apply, Applicative  
+
