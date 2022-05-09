@@ -1,5 +1,6 @@
 import * as R from 'fp-ts/lib/Reader'
-import { pipe } from 'fp-ts/lib/function'
+import * as IO from 'fp-ts/lib/IO'
+import { flow, pipe } from 'fp-ts/lib/function'
 import { ask, chain, map } from 'fp-ts/lib/Reader'
 
 // Reader Monad (A -> A, A -> B)
@@ -61,3 +62,9 @@ const numToStrReader = R.asks((n: number) => `read: ${n}`)
 numToStrReader(10) //?
 
 type Switch = 'true' | 'false'
+
+const getItem =
+  (key: string): IO.IO<string> =>
+  () =>
+    '{"name": "hoejun"}'
+const getParsedItem = flow(getItem, IO.map(JSON.parse))

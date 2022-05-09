@@ -11,7 +11,7 @@
 import * as O from 'fp-ts/lib/Option'
 import * as TO from 'fp-ts/lib/TaskOption'
 import * as T from 'fp-ts/lib/Task'
-import { pipe } from 'fp-ts/lib/function'
+import { flow, pipe } from 'fp-ts/lib/function'
 
 /*** Constructor ***/
 
@@ -191,4 +191,3 @@ O.apS("b", O.some(1))(O.some({ a: 2 })) /*?*/ // { _tag: 'Some', value: { a:2, b
 O.apS("a", O.some(1))(O.some({ a: 2 })) /*?*/ // { _tag: 'Some', value: { a:1 } }
 O.apS("b", O.none)(O.some({ a: 2 })) /*?*/
 O.apS("b", O.some(1))(O.none)  /*?*/
-

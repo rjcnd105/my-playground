@@ -24,8 +24,10 @@ OOP의 클래스랑은 전혀 다른 용어이다. 타입 클래스는 ad hoc(�
 **flab:** map의 정확한 역순. ap는 값을 타입클래스로 받지만, flab은 바로 내부로 받음. ap의 간소화 버전인듯.  
 **of:** 순수한 값을 통해 타입클래스로 lifting - Pointed의 구현  
 **chain:** 현재 타입클래스로부터 함수를 거쳐 현재 타입클래스를 리턴함. map, ap와 같이 값이(ex: Either의 left) 통과하지 않으므로 통합적인 재처리에 유용 - Chain의 구현  
+**chain{Monad}K:** 해당 Monad 내부를 디코딩한 값을 받아 {Monad}에 적힌 low-level을 타입클래스로 lifting함.  
 **Do:** 해당 타입클래스의 빈 값을 생성.[ Monad를 chain하는 자기 사상을 사용할때 sugar 역할로 많이 쓰임.](https://gcanti.github.io/fp-ts/guides/do-notation.html)
 **duplicate:** 타입클래스를 중첩시킨다.  
+**alt:** 대안, 실패할 경우만 실행되며(left, none 등) 실패할 경우에 다른 Effect를 제공한다. 
 **fold:** 타입클래스 내부의 값을 반환. 단, 반환 유형이 같아야 한다. (ex: none => "none", some(v) => "v: ${v}")  
 **foldW:** 타입클래스 내부의 값을 반환, 반환 유형이 같을 필요가 없다. (ex: none => 0, some(v) => "v: ${v}"가 가능).  W 붙으면 전부 이런 식  
 **match:** fold와의 차이는 Effect하지 않다는 것. matchE를 사용하면 fold와 같다. fold가 Effect하지 않은 타입클래스의 경우는 match와 fold가 같다.  
@@ -104,12 +106,10 @@ concat으로 항등원을 결합하면 입력 값이 그대로 나옴을 약속�
 동기적인 작업. side effect처리가 아닌 순수 함수의 의미  
 T: ```() -> A```
 
-
 **IO&lt;A&gt;**  
 동기적으로 side effect를 수행한 후 결과를 돌려줌. (ex: localStorage get, dom 읽기 등)  
 IO<void>처럼 쓰면 리턴하지 않는 side effect를 실행한다는 것. (ex: localStorage set, console.log, dom write 작업)  
 T: ```() -> A```
-
 
 **Task&lt;A&gt;**  
 비동기 작업, Lazy Promise&lt;A&gt;, Promise는 순수하지 않고 참조 불투명하여 Task라는 통으로 Promise라는 내용물을 감싼다.  
@@ -117,7 +117,6 @@ T: ```() -> A```
 실패가 존재하지 않는다.  
 실패가 존재하지 않음을 확실히 알고 있을 때에만 Task를 쓰며, 아닐 경우 TaskEither을 사용하라.  
 T: ```() -> Promise<A>```
-
 
 **TaskEither&lt;E, A&gt;**
 Task + Either  
@@ -237,7 +236,22 @@ const myTaskEitherBad: TE.TaskEither<{ message: string }, number> = TE.tryCatch(
 pipe(
   RTE.right(42),
   RTE.map((n: number) => n.toString()),
-)
+) // 
 ```
 - apply, Applicative  
+sequenceS를 사용하면 병렬, sequenceT를 사용하면 독립 작업을 시행할 수 있다.  
+```typescript
+const myRTE1 = RTE.right(1) 
+const myRTE2 = RTE.right(2)
+const myRTE3 = RTE.right(3)
 
+const myRTEAll: ReaderTaskEither<
+  unknown,
+  never,
+  { value1: number; value2: number; value3: number }
+> = sequenceS(RTE.readerTaskEither)({
+  value1: myRTE1,
+  value2: myRTE2,
+  value3: myRTE3,
+})
+```

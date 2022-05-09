@@ -3,11 +3,13 @@ import * as E from 'fp-ts/lib/Either'
 import * as N from 'fp-ts/lib/number'
 import * as S from 'fp-ts/lib/string'
 import * as O from 'fp-ts/lib/Option'
+import * as IO from 'fp-ts/lib/IO'
 import { flow, pipe } from 'fp-ts/lib/function'
 import axios, { AxiosRequestConfig } from 'axios'
 import * as R from 'fp-ts/lib/Reader'
 import { Blob, Response } from 'node-fetch'
 import * as RTE from 'fp-ts/lib/ReaderTaskEither'
+import * as RT from 'fp-ts/lib/ReaderTask'
 import IoT from 'io-ts'
 import { Eq } from 'fp-ts/es6/number'
 
@@ -212,8 +214,35 @@ const c: TE.TaskEither<Error, A> = pipe(
   TE.apS('a', a),
   TE.apS('b', b),
   TE.map(({ a, b }) => ({ ...a, ...b }))
-)
+) /*?*/
 
 a() //?
 b() //?
 c() //?
+await c() /*?*/
+
+pipe(
+  E.left('aaa'),
+  E.alt(() => E.left('!') )
+) /*?*/
+
+let d =  pipe(
+  RTE.left('Fail'),
+  RTE.alt(() => RTE.left('Tried again and failed')),
+  RTE.alt(() => RTE.right(42)),
+  RTE.alt(() => RTE.left('This will never run')),
+) /*?*/
+await d({})() /*?*/ // { _tag: "Right", value: 42 }
+
+
+const rte: RTE.ReaderTaskEither<boolean, string, number> = pipe(
+  RTE.ask<boolean>(),
+  RTE.chainEitherK((r: boolean) => (r ? E.right(42) : E.left('oops'))),
+)
+// 여기에서 true는 Reader을 통해 DI 되는 값
+rte(true )() /*?*/
+
+const F = pipe(
+  RTE.right(42),
+  RTE.map((n: number) => n.toString()),
+) /*?*/
