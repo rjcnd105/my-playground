@@ -20,6 +20,7 @@
 **fold:** 유형 생성자 내부의 값을 반환. 단, 반환 유형이 같아야 한다. (ex: none => "none", some(v) => "v: ${v}")  
 **foldW:** 유형 생성자 내부의 값을 반환, 반환 유형이 같을 필요가 없다. (ex: none => 0, some(v) => "v: ${v}"가 가능)  
 **match:** fold와의 차이는 Effect하지 않다는 것. matchE를 사용하면 fold와 같다. fold가 Effect하지 않은 유형 생성자의 경우는 match와 fold가 같다.  
+**apFirst, apSecond:** 두 유형 생성자를 취하고 첫번째(First) 또는 두번째(Second) 유형생성자를 반환,
 
 ---
 ### 접미사 
