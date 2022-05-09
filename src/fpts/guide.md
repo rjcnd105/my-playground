@@ -10,7 +10,7 @@
 
 ---
 ### 메소드
-**map:** 함수를 받아 값에 적용시킴 - Functor의 구현  
+**map:** 함수를 받아 유형 내의 값에 적용시킴 - Functor의 구현  
 **ap:** 유형 내에 함수를 받아 값에 적용시킴 map의 역순과도 같음 - Apply의 구현  
 **of:** lifting, Functor로 들어 올림 - Pointed의 구현  
 **chain:** 현재 유형으로부터 함수를 거쳐 현재 유형을 리턴함. map, ap와 같이 값이(ex: Either의 left) 통과하지 않으므로 통합적인 재처리에 유용 - Chain의 구현  
