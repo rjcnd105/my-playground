@@ -175,7 +175,7 @@ pipe(
 **ReaderTaskEither, TaskEither의 규칙 3가지**  
 1. Promise를 tryCatch를 통해 들어올려라.  
 2. Task의 타입을 명시하라.  
-3. 직접적인 실행은 하면 안된다! Either에 대한 오류처리가 되지 않기 때문이다. 기껏 Either을 쓴 의미가 사라진다. _실행하려면 ```Task<void>```에서 실행하라._  
+3. 직접적인 실행은 하면 안된다! Either에 대한 오류처리가 되지 않기 때문이다. 기껏 Either을 쓴 의미가 사라진다. 실행하려면 ```Task<void>```에서 실행하라.  
 
 **ReaderTaskEither 활용 예**
 - ReaderTaskEither에서 의존성 주입에 상관 없는 TaskEither로의 사용  
