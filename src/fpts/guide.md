@@ -6,7 +6,7 @@ OOP의 클래스랑은 전혀 다른 용어이다. 타입 클래스는 ad hoc(�
 여기에서의 인스턴스는 어디까지나 위에서 정의한 것 같은 타입클래스를 어느 형태에 대해서 구상화한 것이라고 생각해 주었으면 한다.
 
 편의상 타입클래스의 인스턴스도 그냥 타입클래스라 부르겠다. 보통은 타입클래스의 인스턴스를 칭할 것이다.  
-그리고 타입클래스 F에 대해 F<A>에서 A에 대한 타입을 유형이라고 부르겠다.   
+그리고 타입클래스 F에 대해 F<A>에서 A에 대한 타입을 내부 유형이라고 부르겠다.   
 
 ### 용어 (목차)
 <font size="2" color="#888">용어의 코드는 전부 example</font>
@@ -34,11 +34,13 @@ OOP의 클래스랑은 전혀 다른 용어이다. 타입 클래스는 ad hoc(�
 **apFirst, apSecond:** 두 타입클래스를 취하고 첫번째(First) 또는 두번째(Second) 유형생성자를 반환  
 **sequenceArray:** 타입클래스 F에 대해 ```Array<F<A>>```를 ```F<Array<A>>``` 형태로 변환.  
 **tryCatch:** 정상적인 값의 경우 성공, throw되는 경우 실패로 처리하여 타입클래스로 감싼다.    
+**sequenceS:** 내부 유형을 객체(Struct)로 변환  
+**sequenceT:** 내부 유형을 튜플로 변환  
 
 ---
 ### 접미사 
 **W:** Less strict version. 더 나은 타입 추론을 위해 사용할 수도 있음.  
-**S:** Struct? 객체를 의미하는 듯...?    
+**S:** Structs의 약어. 즉 내부 유형을 객체로 변환
 **K:** Kleisli의 약어. ```A -> F<B>``` 와 같은 서명을 지님   
 **T:** Transformer의 약어. 모나드 변환기를 의미. 그러나 sequenceT에서의 T는 Tuple을 의미한다.     
 **E:** Effect의 약어. 함수형 프로그래밍에서의 Effect는 모델링된 값을 의미한다. 즉 T가 F&lt;T&gt;처럼 F라는 모델링안에 감싸여져 있는 것을 말함. [참고](https://www.reddit.com/r/hascalator/comments/ald8qs/what_is_functional_effect/)  
@@ -91,7 +93,7 @@ T: ```R -> A```
 
 **Magma&lt;A&gt;**  
 유형 결합자  
-내부에 ```concat(a1: A, a2: A) -> A```를 가지고 있음
+```concat(a1: A, a2: A) -> A```함수를 가지고 있음
 
 **Semigroup&lt;A&gt;**  
 Magma랑 구현이 같으나, semigroup은 Associativity(결합법칙)을 준수하는 유형  
@@ -170,12 +172,14 @@ pipe(
   O.apS('name', O.some('gggruru'))
 ) // { _tag: 'Some', value: { age: 3, name: 'gggruru } }
 ```
+**ReaderTaskEither, TaskEither의 규칙 3가지**  
+1. Promise를 tryCatch를 통해 들어올려라.  
+2. Task의 타입을 명시하라.  
+3. 직접적인 실행은 하면 안된다! Either에 대한 오류처리가 되지 않기 때문이다. 기껏 Either을 쓴 의미가 사라진다. _실행하려면 ```Task<void>```에서 실행하라._  
 
 **ReaderTaskEither 활용 예**
 - ReaderTaskEither에서 의존성 주입에 상관 없는 TaskEither로의 사용  
 ```ReaderTaskEither<unknown, E, A>``` 처럼 사용하면 된다.  
-아무 의존성 주입 없이 호출하면 아무 손실 없이 TaskEither가 반환된다.
-
 
 ```typescript
 import * as RTE from 'fp-ts/lib/ReaderTaskEither'

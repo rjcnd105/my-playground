@@ -12,6 +12,7 @@ import * as RTE from 'fp-ts/lib/ReaderTaskEither'
 import * as RT from 'fp-ts/lib/ReaderTask'
 import IoT from 'io-ts'
 import { Eq } from 'fp-ts/es6/number'
+import { sequenceS } from 'fp-ts/lib/Apply'
 
 /*
  * TaskEither<E, A>
@@ -234,11 +235,14 @@ let d =  pipe(
 ) /*?*/
 await d({})() /*?*/ // { _tag: "Right", value: 42 }
 
+sequenceS
+
 
 const rte: RTE.ReaderTaskEither<boolean, string, number> = pipe(
   RTE.ask<boolean>(),
   RTE.chainEitherK((r: boolean) => (r ? E.right(42) : E.left('oops'))),
 )
+
 // 여기에서 true는 Reader을 통해 DI 되는 값
 rte(true )() /*?*/
 
