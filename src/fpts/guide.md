@@ -19,12 +19,12 @@
 
 ---
 ### 접미사 
-**[0-9]:** 
-**W:** Less strict version. 더 나은 타입 추론을 위해 사용할 수도 있음.
-**S:**   
-**K:**  
+**W:** Less strict version. 더 나은 타입 추론을 위해 사용할 수도 있음.  
+**S:**    
+**K:**   
 **T:**    
-**C:** 제약을 의미함.
+**E:** Effect의 약어. 함수형 프로그래밍에서의 Effect는 모델링된 값을 의미한다. 즉 T가 F&lt;T&gt;처럼 F라는 모델링안에 감싸여져 있는 것을 말함. [참고](https://www.reddit.com/r/hascalator/comments/ald8qs/what_is_functional_effect/)
+**C:** Constrained의 약어. 제약을 의미함.
 ```typescript
 const getFunctor = <E>(S: Semigroup<E>): Functor2C<"Validation", E> = { ... }
 // Validation은 실패 부분에 대해 Semigroup 인스턴스를 제공하는 경우에만 Functor 인스턴스를 허용한다.

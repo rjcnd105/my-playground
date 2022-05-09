@@ -9,6 +9,8 @@
  * */
 
 import * as Opt from 'fp-ts/lib/Option'
+import * as TO from 'fp-ts/lib/TaskOption'
+import * as T from 'fp-ts/lib/Task'
 import { pipe } from 'fp-ts/lib/function'
 
 /*** Constructor ***/
@@ -160,3 +162,11 @@ graterThan1(Opt.none) /*?*/ // false
 //     O.filter((n) => n > 100) // 조건에 맞지 않으면 None
 //   )
 // )
+
+
+
+// T.Task<number>
+pipe(TO.of('hihi'), TO.match(() => 0, (str) => str.length))() /*?*/
+
+// T.Task<number>
+pipe(TO.of('hihi'), TO.matchE(() => T.of(0), (str) => T.of(str.length)))() /*?*/
