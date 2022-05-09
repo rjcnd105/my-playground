@@ -54,3 +54,6 @@ const mainDo: T.Task<{ x: string, y: string }> = pipe(
   T.chainFirst(({ y }) => print(y)),
 )
 T.bind('x', () => readLine) /*?*/
+
+var aa = E.flap(10) /*?*/
+aa(E.of((n: number) => `v: ${n}`)) /*?*/

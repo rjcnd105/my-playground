@@ -2,27 +2,27 @@
 <font size="2" color="#888">용어의 코드는 전부 example</font>
 
 
-**constructors:** 다른 유형에서 해당 유형으로의 변환, 또는 lifting  ```B<A> -> F<A>```, ```A -> F<A>```  
-**combinators:** 유형 타입 결합자들  ```F<A> + F<B> -> F<A | B>```  
-**destructors:** 유형 타입을 벗김 ```F<A> -> A```  
-**instances:** 유형의 특징적인 함수들
+**constructors:** 다른 유형 생성자에서 해당 유형 생성자로의 변환, 또는 lifting(pure value에서 유형 생성자로 변환)  ```B<A> -> F<A>```, ```A -> F<A>```  
+**combinators:** 유형 생성자 내 타입 결합자  ```F<A> + F<B> -> F<A | B>```  
+**destructors:** 유형 생성자 타입을 벗김 ```F<A> -> A```  
+**instances:** 유형 생성자의 특징적인 함수들
 
 
 ---
 ### 메소드
-**map:** 함수를 받아 유형 내의 값에 적용시킴 - Functor의 구현  
-**ap:** 유형 내에 함수를 받아 값에 적용시킴 map의 역순과도 같음 - Apply의 구현  
-**of:** 순수한 값을 통해 유형으로 lifting - Pointed의 구현  
-**chain:** 현재 유형으로부터 함수를 거쳐 현재 유형을 리턴함. map, ap와 같이 값이(ex: Either의 left) 통과하지 않으므로 통합적인 재처리에 유용 - Chain의 구현  
-**Do:** 해당 유형의 빈 값을 생성.[ Monad를 chain하는 자기 사상을 사용할때 sugar 역할로 많이 쓰임.](https://gcanti.github.io/fp-ts/guides/do-notation.html)
-
+**map:** 함수를 받아 내부에 적용시킴 - Functor의 구현  
+**ap:** 유형 생성자로 랩핑된 함수를 받아 내부에 적용시킴 map의 역순과도 같음 - Apply의 구현  
+**flab:** map의 정확한 역순. ap는 값을 유형 생성자로 받지만, flab은 바로 내부로 받음. ap의 간소화 버전인듯.  
+**of:** 순수한 값을 통해 유형 생성자로 lifting - Pointed의 구현  
+**chain:** 현재 유형 생성자로부터 함수를 거쳐 현재 유형 생성자를 리턴함. map, ap와 같이 값이(ex: Either의 left) 통과하지 않으므로 통합적인 재처리에 유용 - Chain의 구현  
+**Do:** 해당 유형 생성자의 빈 값을 생성.[ Monad를 chain하는 자기 사상을 사용할때 sugar 역할로 많이 쓰임.](https://gcanti.github.io/fp-ts/guides/do-notation.html)
 
 ---
 ### 접미사 
 **W:** Less strict version. 더 나은 타입 추론을 위해 사용할 수도 있음.  
 **S:**    
-**K:**   
-**T:**    
+**K:** Kleisli의 약어. ```A -> F<B>``` 와 같은 서명을 지님   
+**T:** Transformer의 약어. 모나드 변환기를 의미. 그러나 sequenceT에서의 T는 Tuple을 의미한다.     
 **E:** Effect의 약어. 함수형 프로그래밍에서의 Effect는 모델링된 값을 의미한다. 즉 T가 F&lt;T&gt;처럼 F라는 모델링안에 감싸여져 있는 것을 말함. [참고](https://www.reddit.com/r/hascalator/comments/ald8qs/what_is_functional_effect/)
 **C:** Constrained의 약어. 제약을 의미함.
 ```typescript
@@ -69,7 +69,7 @@ T: ```Left<E> | Right<A>```
 [Dependence Injector로 많이 사용됌](https://dev.to/gcanti/getting-started-with-fp-ts-reader-1ie5)  
 DI인데, Lazy한 DI이다.  
 미리 값을 가질 필요 없이 미래에 이 값을 줄 것이다. 라는 의미   
-```R -> A```
+T: ```R -> A```
 
 **Magma&lt;A&gt;**  
 유형 결합자  
@@ -128,7 +128,7 @@ T: ```R -> () -> Promise<Either<E, A>>```
 
 
 ---
-### Useful info
+### Useful info, pattern
 **Option Monad를 예로 Monad의 구성 함수 한번에 보기**  
 of: &lt;A&gt;(a: A)  
 map: &lt;A, B&gt;(fa: Option&lt;A&gt;, f: (a: A) =&gt; B)  

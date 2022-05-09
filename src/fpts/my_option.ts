@@ -9,6 +9,7 @@
  * */
 
 import * as Opt from 'fp-ts/lib/Option'
+import * as OptT from 'fp-ts/lib/OptionT'
 import * as TO from 'fp-ts/lib/TaskOption'
 import * as T from 'fp-ts/lib/Task'
 import { pipe } from 'fp-ts/lib/function'
@@ -170,3 +171,5 @@ pipe(TO.of('hihi'), TO.match(() => 0, (str) => str.length))() /*?*/
 
 // T.Task<number>
 pipe(TO.of('hihi'), TO.matchE(() => T.of(0), (str) => T.of(str.length)))() /*?*/
+
+
