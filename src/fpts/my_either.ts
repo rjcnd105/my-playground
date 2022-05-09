@@ -37,7 +37,10 @@ const mapEx = E.map(number10배)
 mapEx(E.right(10)) /*?*/ // Right 100
 
 
-const d = E.Do
+const d = E.Do /*?*/
+
+const t = T.Do /*?*/
+t() /*?*/
 
 
 const print = (s: string): T.Task<void> => () => Promise.resolve(console.log(s))
