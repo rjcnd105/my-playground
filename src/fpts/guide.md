@@ -27,7 +27,7 @@ OOP의 클래스랑은 전혀 다른 용어이다. 타입 클래스는 ad hoc(�
 **chain{Monad}K:** 해당 Monad 내부를 디코딩한 값을 받아 {Monad}에 적힌 low-level을 타입클래스로 lifting함.  
 **Do:** 해당 타입클래스의 빈 값을 생성.[ Monad를 chain하는 자기 사상을 사용할때 sugar 역할로 많이 쓰임.](https://gcanti.github.io/fp-ts/guides/do-notation.html)
 **duplicate:** 타입클래스를 중첩시킨다.  
-**alt:** 대안, 실패할 경우만 실행되며(left, none 등) 실패할 경우에 다른 Effect를 제공한다. 
+**alt:** 대안, 실패할 경우만 실행되며(left, none 등) 실패할 경우에 다른 Effect를 제공한다.  
 **fold:** 타입클래스 내부의 값을 반환. 단, 반환 유형이 같아야 한다. (ex: none => "none", some(v) => "v: ${v}")  
 **foldW:** 타입클래스 내부의 값을 반환, 반환 유형이 같을 필요가 없다. (ex: none => 0, some(v) => "v: ${v}"가 가능).  W 붙으면 전부 이런 식  
 **match:** fold와의 차이는 Effect하지 않다는 것. matchE를 사용하면 fold와 같다. fold가 Effect하지 않은 타입클래스의 경우는 match와 fold가 같다.  
