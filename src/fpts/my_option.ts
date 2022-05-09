@@ -172,8 +172,23 @@ pipe(TO.of('hihi'), TO.matchE(() => T.of(0), (str) => T.of(str.length)))() /*?*/
 
 
 
-O.chainFirst((a: number) => (a % 2 === 0 ? O.some(a) : O.none))(O.some(1)); // => { _tag: 'None' }
-O.chainFirst((a: number) => (a % 2 === 0 ? O.some(a * 2) : O.none))(O.some(2)); // => { _tag: 'Some', value: 2 }
-O.chainFirst((a: number) => (a % 2 === 0 ? O.some(a) : O.none))(O.none); // => { _tag: 'None' }
+O.chainFirst((a: number) => (a % 2 === 0 ? O.some(a) : O.none))(O.some(1)); /*?*/ // => { _tag: 'None' }
+O.chainFirst((a: number) => (a % 2 === 0 ? O.some(a * 2) : O.none))(O.some(2)) /*?*/ // => { _tag: 'Some', value: 2 }
+O.chainFirst((a: number) => (a % 2 === 0 ? O.some(a) : O.none))(O.none) /*?*/ // => { _tag: 'None' }
+O.chain((a: number) => (a % 2 === 0 ? O.some(a) : O.none))(O.some(1)) /*?*/
 
+
+O.flap(1)(O.some((a) => a * 2)) /*?*/
+O.ap(O.of(1))(O.some((a) => a * 2)) /*?*/
+
+pipe(
+  O.Do,
+  O.apS('age', O.some(3)),
+  O.apS('name', O.some('gggruru'))
+) // { _tag: 'Some', value: { age: 3, name: 'gggruru } }
+
+O.apS("b", O.some(1))(O.some({ a: 2 })) /*?*/ // { _tag: 'Some', value: { a:2, b: 1} }
+O.apS("a", O.some(1))(O.some({ a: 2 })) /*?*/ // { _tag: 'Some', value: { a:1 } }
+O.apS("b", O.none)(O.some({ a: 2 })) /*?*/
+O.apS("b", O.some(1))(O.none)  /*?*/
 

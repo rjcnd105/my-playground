@@ -1,31 +1,36 @@
+보기전에... **타입클래스란?**  
+OOP의 클래스랑은 전혀 다른 용어이다. 타입 클래스는 ad hoc(특정한 목적을 가진) 다형성을 지원하는 타입 시스템 구조이다. [참고](https://en.wikipedia.org/wiki/Type_class)  
+어떠한 형태 A에 대한 조작을 정의한 구조이다.  
+
 ### 용어 (목차)
 <font size="2" color="#888">용어의 코드는 전부 example</font>
 
-
-**constructors:** 다른 유형 생성자에서 해당 유형 생성자로의 변환, 또는 lifting(pure value에서 유형 생성자로 변환)  ```B<A> -> F<A>```, ```A -> F<A>```  
-**combinators:** 유형 생성자 내 타입 결합자  ```F<A> + F<B> -> F<A | B>```  
-**destructors:** 유형 생성자 타입을 벗김 ```F<A> -> A```  
-**instances:** 유형 생성자의 특징적인 함수들
+**constructors:** 다른 타입클래스에서 해당 타입클래스로의 변환, 또는 lifting(pure value에서 타입클래스로 변환)  ```B<A> -> F<A>```, ```A -> F<A>```  
+**combinators:** 타입클래스 내 타입 결합자  ```F<A> + F<B> -> F<A | B>```  
+**destructors:** 타입클래스 타입을 벗김 ```F<A> -> A```  
+**instances:** 타입클래스의 특징적인 함수들
 
 
 ---
 ### 메소드
 **map:** 함수를 받아 내부에 적용시킴 - Functor의 구현  
-**ap:** 유형 생성자로 랩핑된 함수를 받아 내부에 적용시킴 map의 역순과도 같음 - Apply의 구현  
-**flab:** map의 정확한 역순. ap는 값을 유형 생성자로 받지만, flab은 바로 내부로 받음. ap의 간소화 버전인듯.  
-**of:** 순수한 값을 통해 유형 생성자로 lifting - Pointed의 구현  
-**chain:** 현재 유형 생성자로부터 함수를 거쳐 현재 유형 생성자를 리턴함. map, ap와 같이 값이(ex: Either의 left) 통과하지 않으므로 통합적인 재처리에 유용 - Chain의 구현  
-**Do:** 해당 유형 생성자의 빈 값을 생성.[ Monad를 chain하는 자기 사상을 사용할때 sugar 역할로 많이 쓰임.](https://gcanti.github.io/fp-ts/guides/do-notation.html)
-**duplicate:** 유형 생성자를 중첩시킨다.  
-**fold:** 유형 생성자 내부의 값을 반환. 단, 반환 유형이 같아야 한다. (ex: none => "none", some(v) => "v: ${v}")  
-**foldW:** 유형 생성자 내부의 값을 반환, 반환 유형이 같을 필요가 없다. (ex: none => 0, some(v) => "v: ${v}"가 가능)  
-**match:** fold와의 차이는 Effect하지 않다는 것. matchE를 사용하면 fold와 같다. fold가 Effect하지 않은 유형 생성자의 경우는 match와 fold가 같다.  
-**apFirst, apSecond:** 두 유형 생성자를 취하고 첫번째(First) 또는 두번째(Second) 유형생성자를 반환,
+**ap:** 타입클래스로 랩핑된 함수를 받아 내부에 적용시킴 map의 역순과도 같음 - Apply의 구현  
+**flab:** map의 정확한 역순. ap는 값을 타입클래스로 받지만, flab은 바로 내부로 받음. ap의 간소화 버전인듯.  
+**of:** 순수한 값을 통해 타입클래스로 lifting - Pointed의 구현  
+**chain:** 현재 타입클래스로부터 함수를 거쳐 현재 타입클래스를 리턴함. map, ap와 같이 값이(ex: Either의 left) 통과하지 않으므로 통합적인 재처리에 유용 - Chain의 구현  
+**Do:** 해당 타입클래스의 빈 값을 생성.[ Monad를 chain하는 자기 사상을 사용할때 sugar 역할로 많이 쓰임.](https://gcanti.github.io/fp-ts/guides/do-notation.html)
+**duplicate:** 타입클래스를 중첩시킨다.  
+**fold:** 타입클래스 내부의 값을 반환. 단, 반환 유형이 같아야 한다. (ex: none => "none", some(v) => "v: ${v}")  
+**foldW:** 타입클래스 내부의 값을 반환, 반환 유형이 같을 필요가 없다. (ex: none => 0, some(v) => "v: ${v}"가 가능).  W 붙으면 전부 이런 식  
+**match:** fold와의 차이는 Effect하지 않다는 것. matchE를 사용하면 fold와 같다. fold가 Effect하지 않은 타입클래스의 경우는 match와 fold가 같다.  
+**apFirst, apSecond:** 두 타입클래스를 취하고 첫번째(First) 또는 두번째(Second) 유형생성자를 반환  
+**sequenceArray:** 타입클래스 F에 대해 ```Array<F<A>>```를 ```F<Array<A>>``` 형태로 변환.  
+**tryCatch:** 정상적인 값의 경우 성공, throw되는 경우 실패로 처리하여 타입클래스로 감싼다.    
 
 ---
 ### 접미사 
 **W:** Less strict version. 더 나은 타입 추론을 위해 사용할 수도 있음.  
-**S:** Sequence의 약어.   
+**S:** Struct? 객체를 의미하는 듯...?    
 **K:** Kleisli의 약어. ```A -> F<B>``` 와 같은 서명을 지님   
 **T:** Transformer의 약어. 모나드 변환기를 의미. 그러나 sequenceT에서의 T는 Tuple을 의미한다.     
 **E:** Effect의 약어. 함수형 프로그래밍에서의 Effect는 모델링된 값을 의미한다. 즉 T가 F&lt;T&gt;처럼 F라는 모델링안에 감싸여져 있는 것을 말함. [참고](https://www.reddit.com/r/hascalator/comments/ald8qs/what_is_functional_effect/)  
@@ -139,6 +144,27 @@ of: &lt;A&gt;(a: A)
 map: &lt;A, B&gt;(fa: Option&lt;A&gt;, f: (a: A) =&gt; B)  
 chain: &lt;A, B&gt;(fa: Option&lt;A&gt;, f: (a: A) =&gt; Option&lt;B&gt;)  
 ap: &lt;A, B&gt;(fab: Option&lt;(a: A) =&gt; B&gt;, fa: Option&lt;A&gt;)
+
+**flab과 ap와의 차이**
+```typescript
+O.ap(O.of(1))(O.some((a) => a * 2)) // { _tag: 'Some', value: 2 }
+O.flap(1)(O.some((a) => a * 2)) // { _tag: 'Some', value: 2 }
+```
+
+**Option으로 보는 apS**  
+```typescript
+O.apS("b", O.some(1))(O.some({ a: 2 })) // { _tag: 'Some', value: { a: 2, b: 1 } }
+O.apS("a", O.some(1))(O.some({ a: 2 })) // { _tag: 'Some', value: { a: 1 } }
+O.apS("b", O.none)(O.some({ a: 2 })) // { _tag: 'None' }
+O.apS("b", O.some(1))(O.none) // { _tag: 'None' }
+
+// apS는 pipe를 통해 struct의 확장에 자주 쓰인다.  
+pipe(
+  O.Do,
+  O.apS('age', O.some(3)),
+  O.apS('name', O.some('gggruru'))
+) // { _tag: 'Some', value: { age: 3, name: 'gggruru } }
+```
 
 **ReaderTaskEither 활용 예**
 - ReaderTaskEither에서 의존성 주입에 상관 없는 TaskEither로의 사용  
