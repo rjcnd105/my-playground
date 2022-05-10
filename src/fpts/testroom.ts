@@ -4,6 +4,7 @@ import * as T from 'fp-ts/lib/Task'
 import * as TE from 'fp-ts/lib/TaskEither'
 import * as IO from 'fp-ts/lib/IO'
 import * as E from 'fp-ts/lib/Either'
+import { Response } from 'node-fetch'
 import { flow, pipe } from 'fp-ts/lib/function'
 import axios, { AxiosResponse } from 'axios'
 
@@ -53,12 +54,23 @@ const getTodo: RTE.ReaderTaskEither<
         } as ApiError
       }
     ),
-        TE.map(res => res.data),
 
     )
 
 const myTask1 = getTodo('1')() /*?*/
 
+
+// 하나로 모으기 TaskEither<ApiError, AxiosResponse<Todo>> -> Task<Response>
+const t11 = await pipe(
+  getTodo('10'),
+  TE.match(
+    (apiError) => new Response('FAIL URL'),
+    (res) => new Response('SUCCESS URL')
+  )
+) /*?*/
+
+// either로 가져오기, 그 이전에 pipe로 수 많은 처리를 할 수 있겠지?
+const either = await getTodo('5')() /*?*/
 
 // await getTodo('3')() /*?*/
  
