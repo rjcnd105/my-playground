@@ -2,16 +2,12 @@ import * as TE from 'fp-ts/lib/TaskEither'
 import * as E from 'fp-ts/lib/Either'
 import * as N from 'fp-ts/lib/number'
 import * as S from 'fp-ts/lib/string'
-import * as O from 'fp-ts/lib/Option'
-import * as IO from 'fp-ts/lib/IO'
 import { flow, pipe } from 'fp-ts/lib/function'
-import axios, { AxiosRequestConfig } from 'axios'
+import axios from 'axios'
 import * as R from 'fp-ts/lib/Reader'
-import { Blob, Response } from 'node-fetch'
+import { Response } from 'node-fetch'
 import * as RTE from 'fp-ts/lib/ReaderTaskEither'
-import * as RT from 'fp-ts/lib/ReaderTask'
 import IoT from 'io-ts'
-import { Eq } from 'fp-ts/es6/number'
 import { sequenceS } from 'fp-ts/lib/Apply'
 
 /*
@@ -45,12 +41,14 @@ const f1 = f({ f: symB })
 const f2 = f({ f: symA })
 const aaaa = { type: 'AAA' }
 const f3 = f(aaaa)
+
 function aa() {
   if (!f(aaaa)) {
     return
   }
   aaaa // Uni
 }
+
 // const bbb = new Blob([JSON.stringify({ name: 'gggruru' })], {
 //   type: 'application/json',
 // })
@@ -224,29 +222,28 @@ await c() /*?*/
 
 pipe(
   E.left('aaa'),
-  E.alt(() => E.left('!') )
+  E.alt(() => E.left('!'))
 ) /*?*/
 
-let d =  pipe(
+let d = pipe(
   RTE.left('Fail'),
   RTE.alt(() => RTE.left('Tried again and failed')),
   RTE.alt(() => RTE.right(42)),
-  RTE.alt(() => RTE.left('This will never run')),
+  RTE.alt(() => RTE.left('This will never run'))
 ) /*?*/
 await d({})() /*?*/ // { _tag: "Right", value: 42 }
 
 sequenceS
 
-
 const rte: RTE.ReaderTaskEither<boolean, string, number> = pipe(
   RTE.ask<boolean>(),
-  RTE.chainEitherK((r: boolean) => (r ? E.right(42) : E.left('oops'))),
+  RTE.chainEitherK((r: boolean) => (r ? E.right(42) : E.left('oops')))
 )
 
 // 여기에서 true는 Reader을 통해 DI 되는 값
-rte(true )() /*?*/
+rte(true)() /*?*/
 
 const F = pipe(
   RTE.right(42),
-  RTE.map((n: number) => n.toString()),
+  RTE.map((n: number) => n.toString())
 ) /*?*/

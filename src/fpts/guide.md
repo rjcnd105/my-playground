@@ -5,7 +5,7 @@ OOP의 클래스랑은 전혀 다른 용어이다. 타입 클래스는 ad hoc(�
 타입클래스의 인스턴스는 OOP의 인스턴스와는 다른 말이다. 
 여기에서의 인스턴스는 어디까지나 위에서 정의한 것 같은 타입클래스를 어느 형태에 대해서 구상화한 것이라고 생각해 주었으면 한다.
 
-편의상 타입클래스의 인스턴스도 그냥 타입클래스라 부르겠다. 보통은 타입클래스의 인스턴스를 칭할 것이다.  
+여기선 편의상 타입클래스의 인스턴스도 그냥 타입클래스라 부르겠다. 보통은 타입클래스의 인스턴스를 칭할 것이다.  
 그리고 타입클래스 F에 대해 F<A>에서 A에 대한 타입을 내부 유형이라고 부르겠다.   
 
 ### 용어 (목차)
@@ -36,7 +36,8 @@ OOP의 클래스랑은 전혀 다른 용어이다. 타입 클래스는 ad hoc(�
 **tryCatch:** 정상적인 값의 경우 성공, throw되는 경우 실패로 처리하여 타입클래스로 감싼다.    
 **sequenceS:** 내부 유형을 객체(Struct)로 변환  
 **sequenceT:** 내부 유형을 튜플로 변환  
-
+**flatten:** 중첩된 타입클래스를 평탄화 한다. ```F<F<A>> -> F<A>```   
+**flatMap:** map으로 유형을 타입클래스로 한번 더 감싼 후, flatten을 한 것(F<A> -> F<F<A>> -> F<A>). ```flatMap(g) ∘ f = flatten ∘ map(g) ∘ f```  
 ---
 ### 접미사 
 **W:** Less strict version. 더 나은 타입 추론을 위해 사용할 수도 있음.  
@@ -146,6 +147,7 @@ T: ```R -> () -> Promise<Either<E, A>>```
 
 ---
 ### Useful info, pattern
+
 **Option Monad를 예로 Monad의 구성 함수 한번에 보기**  
 of: &lt;A&gt;(a: A)  
 map: &lt;A, B&gt;(fa: Option&lt;A&gt;, f: (a: A) =&gt; B)  
@@ -172,7 +174,7 @@ pipe(
   O.apS('name', O.some('gggruru'))
 ) // { _tag: 'Some', value: { age: 3, name: 'gggruru } }
 ```
-**ReaderTaskEither, TaskEither의 규칙 3가지**  
+**ReaderTaskEither, TaskEither의 룰 3가지**  
 1. Promise를 tryCatch를 통해 들어올려라.  
 2. Task의 타입을 명시하라.  
 3. 직접적인 실행은 하면 안된다! Either에 대한 오류처리가 되지 않기 때문이다. 기껏 Either을 쓴 의미가 사라진다. 실행하려면 ```Task<void>```에서 실행하라.  
