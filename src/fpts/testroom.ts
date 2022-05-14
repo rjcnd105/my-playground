@@ -41,7 +41,7 @@ const getTodo: RTE.ReaderTaskEither<
   ApiError,
   AxiosResponse<Todo>
 > = (todoId) =>
-    pipe(TE.tryCatch(
+    TE.tryCatch(
       () => {
         console.log(todoId)
         return axios.get(`https://jsonplaceholder.typicode.com/todos/${todoId}`)
@@ -53,9 +53,8 @@ const getTodo: RTE.ReaderTaskEither<
           message: 'fail',
         } as ApiError
       }
-    ),
-
     )
+
 
 const myTask1 = getTodo('1')() /*?*/
 
@@ -69,8 +68,11 @@ const t11 = await pipe(
   )
 ) /*?*/
 
-// either로 가져오기, 그 이전에 pipe로 수 많은 처리를 할 수 있겠지?
-const either = await getTodo('5')() /*?*/
+// either로 가져오기
+const either = await pipe(
+  getTodo('5'),
+  TE.map(({data}) => data)
+)() /*?*/
 
 // await getTodo('3')() /*?*/
  
@@ -80,5 +82,14 @@ function t1() {
 }
 
 t1()
+type MakeTuple<T> = <T>(v: T) => [T, T]
+const lazy = <T>(fn: T) => fn
+// const makeTuple = lazy<MakeTuple<T>>((v: T) => [v, v])
+
+
+const makeTuple: <T>(v: T) => [T, T] = (v) => [v, v] // OK
+const makeStringTuple = makeTuple<string>;
+
+
 
 export default {}

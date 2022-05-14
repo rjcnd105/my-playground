@@ -42,7 +42,7 @@ OOP의 클래스랑은 전혀 다른 용어이다. 타입 클래스는 ad hoc(�
 ---
 ### 접미사 
 **W:** Less strict version. 더 나은 타입 추론을 위해 사용할 수도 있음.  
-**S:** Structs의 약어. 즉 내부 유형을 객체로 변환
+**S:** Structs의 약어. 즉 내부 유형을 객체로 변환  
 **K:** Kleisli의 약어. ```A -> F<B>``` 와 같은 서명을 지님   
 **T:** Transformer의 약어. 모나드 변환기를 의미. 그러나 sequenceT에서의 T는 Tuple을 의미한다.     
 **E:** Effect의 약어. 함수형 프로그래밍에서의 Effect는 모델링된 값을 의미한다. 즉 T가 F&lt;T&gt;처럼 F라는 모델링안에 감싸여져 있는 것을 말함. [참고](https://www.reddit.com/r/hascalator/comments/ald8qs/what_is_functional_effect/)  
@@ -112,7 +112,7 @@ T: ```() -> A```
 
 **IO&lt;A&gt;**  
 동기적으로 side effect를 수행한 후 결과를 돌려줌. (ex: localStorage get, dom 읽기 등)  
-IO<void>처럼 쓰면 리턴하지 않는 side effect를 실행한다는 것. (ex: localStorage set, console.log, dom write 작업)  
+IO&lt;void&gt;처럼 쓰면 리턴하지 않는 side effect를 실행한다는 것. (ex: localStorage set, console.log, dom write 작업)  
 T: ```() -> A```
 
 **Task&lt;A&gt;**  
