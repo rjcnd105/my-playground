@@ -70,6 +70,7 @@ const getFunctor = <E>(S: Semigroup<E>): Functor2C<"Validation", E> = { ... }
 **Monad&lt;N...&gt;**  
 자기사상 Functor Monoid.   
 ```chain(flatmap), of, map, ap```을 제공  
+이것들을 가지고 있으면 Monad라고 보면 된다. (ex: Option Monad, Either Monad ...)  
 _monadic laws_(모노이드의 법칙과도 같음)  
 - Left Identity: of(x).chain(f) == of(f(x))  
 - Right Identity: of(x).chain(of) = of(x)  
