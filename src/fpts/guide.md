@@ -122,7 +122,7 @@ T: ```() -> A```
 실패가 존재하지 않음을 확실히 알고 있을 때에만 Task를 쓰며, 아닐 경우 TaskEither을 사용하라.  
 T: ```() -> Promise<A>```
 
-**TaskEither&lt;E, A&gt;**
+**TaskEither&lt;E, A&gt;**  
 Task + Either  
 결과를 Either로 내려줌으로써 실패에 대한 처리를 할 수 있다.  
 Promise처럼 참조 불투명한 실패처리가 아니라 값에 대한 처리이므로 추적이 용이하고 합성이 쉽다.  
