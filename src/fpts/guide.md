@@ -18,63 +18,23 @@ OOP의 클래스랑은 전혀 다른 용어이다. 타입 클래스는 ad hoc(�
 
 
 ---
-### 메소드  
-**map:** 함수를 받아 내부에 적용시킴 - Functor의 구현  
-**ap:** 타입클래스로 랩핑된 함수를 받아 내부에 적용시킴 map의 역순과도 같음 - Apply의 구현  
-**flab:** map의 정확한 역순. ap는 값을 타입클래스로 받지만, flab은 바로 내부로 받음. ap의 간소화 버전인듯.  
-**of:** 순수한 값을 통해 타입클래스로 lifting - Pointed의 구현  
-**chain:** 현재 타입클래스로부터 함수를 거쳐 현재 타입클래스를 리턴함. map, ap와 같이 값이(ex: Either의 left) 통과하지 않으므로 통합적인 재처리에 유용 - Chain의 구현  
-**chain{Monad}K:** 해당 Monad 내부를 디코딩한 값을 받아 {Monad}에 적힌 low-level을 타입클래스로 lifting함.  
-**Do:** 해당 타입클래스의 빈 값을 생성.[ Monad를 chain하는 자기 사상을 사용할때 sugar 역할로 많이 쓰임.](https://gcanti.github.io/fp-ts/guides/do-notation.html)
-**duplicate:** 타입클래스를 중첩시킨다.  
-**alt:** 대안, 실패할 경우만 실행되며(left, none 등) 실패할 경우에 다른 Effect를 제공한다.  
-**fold:** 타입클래스 내부의 값을 반환. 단, 반환 유형이 같아야 한다. (ex: none => "none", some(v) => "v: ${v}")  
-**foldW:** 타입클래스 내부의 값을 반환, 반환 유형이 같을 필요가 없다. (ex: none => 0, some(v) => "v: ${v}"가 가능).  W 붙으면 전부 이런 식  
-**match:** fold와의 차이는 Effect하지 않다는 것. matchE를 사용하면 fold와 같다. fold가 Effect하지 않은 타입클래스의 경우는 match와 fold가 같다.  
-**apFirst, apSecond:** 두 타입클래스를 취하고 첫번째(First) 또는 두번째(Second) 유형생성자를 반환  
-**sequenceArray:** 타입클래스 F에 대해 ```Array<F<A>>```를 ```F<Array<A>>``` 형태로 변환.  
-**tryCatch:** 정상적인 값의 경우 성공, throw되는 경우 실패로 처리하여 타입클래스로 감싼다.    
-**sequenceS:** 내부 유형을 객체(Struct)로 변환  
-**sequenceT:** 내부 유형을 튜플로 변환  
-**flatten:** 중첩된 타입클래스를 평탄화 한다. ```F<F<A>> -> F<A>```   
-**flatMap:** map으로 유형을 타입클래스로 한번 더 감싼 후, flatten을 한 것(F<A> -> F<F<A>> -> F<A>). ```flatMap(g) ∘ f = flatten ∘ map(g) ∘ f```  
-
----
-### 접미사 
-**W:** Less strict version. 더 나은 타입 추론을 위해 사용할 수도 있음.  
-**S:** Structs의 약어. 즉 내부 유형을 객체로 변환  
-**K:** Kleisli의 약어. ```A -> F<B>``` 와 같은 서명을 지님   
-**T:** Transformer의 약어. 모나드 변환기를 의미. 그러나 sequenceT에서의 T는 Tuple을 의미한다.     
-**E:** Effect의 약어. 함수형 프로그래밍에서의 Effect는 모델링된 값을 의미한다. 즉 T가 F&lt;T&gt;처럼 F라는 모델링안에 감싸여져 있는 것을 말함. [참고](https://www.reddit.com/r/hascalator/comments/ald8qs/what_is_functional_effect/)  
-**C:** Constrained의 약어. 제약을 의미함.
-```typescript
-const getFunctor = <E>(S: Semigroup<E>): Functor2C<"Validation", E> = { ... }
-// Validation은 실패 부분에 대해 Semigroup 인스턴스를 제공하는 경우에만 Functor 인스턴스를 허용한다.
-```
-
-
-[//]: # (---)
-[//]: # (### 접두사)
-
-
----
 ### 유형 설명
 **Apply&lt;N...&gt;**   
-```ap()```를 제공, 
+```ap()```를 제공,
 인수에 함수를 적용시킴
 
 **Functor&lt;N...&gt;**  
 함수를 받아 값 매핑 ```ex: F<A> -> F<B>```
-```map()```을 제공 
+```map()```을 제공
 
 **Monad&lt;N...&gt;**  
 자기사상 Functor Monoid.   
 ```chain(flatmap), of, map, ap```을 제공  
 이것들을 가지고 있으면 Monad라고 보면 된다. (ex: Option Monad, Either Monad ...)  
-_monadic laws_(모노이드의 법칙과도 같음)  
-- Left Identity: of(x).chain(f) == of(f(x))  
-- Right Identity: of(x).chain(of) = of(x)  
-- Associativity: of(x).chain(f).chain(g) = of(x).chain(flow(f, g))  
+_monadic laws_(모노이드의 법칙과도 같음)
+- Left Identity: of(x).chain(f) == of(f(x))
+- Right Identity: of(x).chain(of) = of(x)
+- Associativity: of(x).chain(f).chain(g) = of(x).chain(flow(f, g))
 
 **Pointed<N...>**  
 lifting 함수인 ```of```를 제공.
@@ -143,6 +103,46 @@ Reader(DI) + Task(async) + Either(can fail)
 이 사례가 굉장히 많아서, 일상적인 프로그래밍에 굉장히 많이 쓰임.  
 Reader로 값을 주입하고 나서 TaskEither가 반환되기 때문에 이를 가지고 여러 체이닝을 할 수 있다.  
 T: ```R -> () -> Promise<Either<E, A>>```
+
+
+---
+### 메소드  
+**map:** 함수를 받아 내부에 적용시킴 - Functor의 구현  
+**ap:** 타입클래스로 랩핑된 함수를 받아 내부에 적용시킴 map의 역순과도 같음 - Apply의 구현  
+**flab:** map의 정확한 역순. ap는 값을 타입클래스로 받지만, flab은 바로 내부로 받음. ap의 간소화 버전인듯.  
+**of:** 순수한 값을 통해 타입클래스로 lifting - Pointed의 구현  
+**chain:** 현재 타입클래스로부터 함수를 거쳐 현재 타입클래스를 리턴함. map, ap와 같이 값이(ex: Either의 left) 통과하지 않으므로 통합적인 재처리에 유용 - Chain의 구현  
+**chain{Monad}K:** 해당 Monad 내부를 디코딩한 값을 받아 {Monad}에 적힌 low-level을 타입클래스로 lifting함.  
+**Do:** 해당 타입클래스의 빈 값을 생성.[ Monad를 chain하는 자기 사상을 사용할때 sugar 역할로 많이 쓰임.](https://gcanti.github.io/fp-ts/guides/do-notation.html)  
+**duplicate:** 타입클래스를 중첩시킨다.  
+**alt:** 대안, 실패할 경우만 실행되며(left, none 등) 실패할 경우에 다른 Effect를 제공한다.  
+**fold:** 타입클래스 내부의 값을 반환. 단, 반환 유형이 같아야 한다. (ex: none => "none", some(v) => "v: ${v}")  
+**foldW:** 타입클래스 내부의 값을 반환, 반환 유형이 같을 필요가 없다. (ex: none => 0, some(v) => "v: ${v}"가 가능).  W 붙으면 전부 이런 식  
+**match:** fold와의 차이는 Effect하지 않다는 것. matchE를 사용하면 fold와 같다. fold가 Effect하지 않은 타입클래스의 경우는 match와 fold가 같다.  
+**apFirst, apSecond:** 두 타입클래스를 취하고 첫번째(First) 또는 두번째(Second) 유형생성자를 반환  
+**sequenceArray:** 타입클래스 F에 대해 ```Array<F<A>>```를 ```F<Array<A>>``` 형태로 변환.  
+**tryCatch:** 정상적인 값의 경우 성공, throw되는 경우 실패로 처리하여 타입클래스로 감싼다.    
+**sequenceS:** 내부 유형을 객체(Struct)로 변환  
+**sequenceT:** 내부 유형을 튜플로 변환  
+**flatten:** 중첩된 타입클래스를 평탄화 한다. ```F<F<A>> -> F<A>```   
+**flatMap:** map으로 유형을 타입클래스로 한번 더 감싼 후, flatten을 한 것(F<A> -> F<F<A>> -> F<A>). ```flatMap(g) ∘ f = flatten ∘ map(g) ∘ f```  
+
+---
+### 접미사 
+**W:** Less strict version. 더 나은 타입 추론을 위해 사용할 수도 있음.  
+**S:** Structs의 약어. 즉 내부 유형을 객체로 변환  
+**K:** Kleisli의 약어. ```A -> F<B>``` 와 같은 서명을 지님   
+**T:** Transformer의 약어. 모나드 변환기를 의미. 그러나 sequenceT에서의 T는 Tuple을 의미한다.     
+**E:** Effect의 약어. 함수형 프로그래밍에서의 Effect는 모델링된 값을 의미한다. 즉 T가 F&lt;T&gt;처럼 F라는 모델링안에 감싸여져 있는 것을 말함. [참고](https://www.reddit.com/r/hascalator/comments/ald8qs/what_is_functional_effect/)  
+**C:** Constrained의 약어. 제약을 의미함.
+```typescript
+const getFunctor = <E>(S: Semigroup<E>): Functor2C<"Validation", E> = { ... }
+// Validation은 실패 부분에 대해 Semigroup 인스턴스를 제공하는 경우에만 Functor 인스턴스를 허용한다.
+```
+
+
+[//]: # (---)
+[//]: # (### 접두사)
 
 
 
