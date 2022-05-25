@@ -3,60 +3,58 @@ function flow2(abc, cd, de, ef, fg, gh, hi, ij, jk) {
     case 1:
       return abc;
     case 2:
-      // ab
-      return function () {
+      return function ab() {
         const argumentsAB = arguments
-        // bc
-        return function () {
+        return function bc() {
           cd(abc.apply(this, argumentsAB).apply(this, arguments));
         }
       };
     case 3:
-      return function () {
+      return function ab() {
         const argumentsAB = arguments
-        return function () {
+        return function bc() {
           de(cd(abc.apply(this, argumentsAB).apply(this, arguments)))
         }
       };
     case 4:
-      return function () {
+      return function ab() {
         const argumentsAB = arguments
-        return function () {
+        return function bc() {
           ef(de(cd(abc.apply(this, argumentsAB).apply(this, arguments))))
         }
       };
     case 5:
-      return function () {
+      return function ab() {
         const argumentsAB = arguments
-        return function () {
+        return function bc() {
           fg(ef(de(cd(abc.apply(this, argumentsAB).apply(this, arguments)))))
         }
       };
     case 6:
-      return function () {
+      return function ab() {
         const argumentsAB = arguments
-        return function () {
+        return function bc() {
           gh(fg(ef(de(cd(abc.apply(this, argumentsAB).apply(this, arguments))))))
         }
       };
     case 7:
-      return function () {
+      return function ab() {
         const argumentsAB = arguments
-        return function () {
+        return function bc() {
           hi(gh(fg(ef(de(cd(abc.apply(this, argumentsAB).apply(this, arguments)))))))
         }
       };
     case 8:
-      return function () {
+      return function ab() {
         const argumentsAB = arguments
-        return function () {
+        return function bc() {
           ij(hi(gh(fg(ef(de(cd(abc.apply(this, argumentsAB).apply(this, arguments))))))))
         }
       };
     case 9:
-      return function () {
+      return function ab() {
         const argumentsAB = arguments
-        return function () {
+        return function bc() {
           jk(ij(hi(gh(fg(ef(de(cd(abc.apply(this, argumentsAB).apply(this, arguments)))))))))
         }
       };

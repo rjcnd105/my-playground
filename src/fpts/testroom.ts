@@ -11,7 +11,7 @@ import { apply, flow, identity, pipe } from 'fp-ts/lib/function'
 import axios, { AxiosResponse } from 'axios'
 import { reduce } from 'fp-ts/lib/Foldable'
 import { composeWithCurriedFunction } from '../fptsUtils/composeWithCurriedFunction'
-import { flow2 } from '../fptsUtils/flow2'
+import { flow2 } from '../fptsUtils/flow2/flow2'
 
 interface ApiError {
   code: number
@@ -113,7 +113,8 @@ const aaa = flow(ff2,f => (...args: Parameters<typeof f>) => ({data: f(...args)}
 
 const f1 = (a: number) => (b: string) => a.toString() === b
 const f2 = (c: boolean) => (d: string) => (e: string) => c ? d : e
-const f3 = composeWithCurriedFunction(ff2, getResult)
+const f3 = composeWithCurriedFunction(f1, f2)
+f3(1)('1')('ok')('x') // ok
 
 
 // Is there a good way to synthesize a higher-order function as the second return value?
