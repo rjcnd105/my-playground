@@ -45,7 +45,7 @@ T: ```Some<A> | None```
 
 **Either&lt;E, A&gt;**  
 실패(```left<E>```) or 성공(```right<A>```)  
-```Either<never, A>``` 처럼 사용시 실패할 수 없는 Either이다.
+```Either<never, A>``` 처럼 사용시 실패할 수 없는 Either이다.  
 T: ```Left<E> | Right<A>```
 
 **Reader&lt;R, A&gt;**  
@@ -91,7 +91,7 @@ T: ```() -> Promise<Either<E, A>>```
 
 **ReaderIO&lt;R, A&gt;**  
 Reader(DI) + IO(side effect)
-부작용을 읽어 주입  
+주입 받은 데이터를 토대로 side effect 작업을 수행함. (ex: 파일명을 받아 파일을 불러온다던지...)    
 T: ```R -> () -> A```
 
 **ReaderTask&lt;R, A&gt;**  
