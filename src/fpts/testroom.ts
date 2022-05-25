@@ -38,9 +38,9 @@ interface Todo {
 
 // const getUserExecute: RT.ReaderTask<Todo['userId'], never> = (todoId) =>
 
-const f = () => {
-    return axios.get(`https://jsonplaceholder.typicode.com/todos/1`)
-  }
+// const f = () => {
+//     return axios.get(`https://jsonplaceholder.typicode.com/todos/1`)
+//   }
 const getTodo: RTE.ReaderTaskEither<
   string,
   ApiError,
@@ -73,6 +73,16 @@ const t11 = await pipe(
   )
 ) /*?*/
 
+const f = (a: number) => (b: string) => new Array<string>(a).fill(b)
+const g = (arr: string[]) => arr.map(str => ({data: str}))
+
+// const fg = flow(f, g) // Error!
+const fg = (...args: Parameters<typeof f>) => flow(f(...args), g) // OK
+fg(3)('a') // [{data: 'a'}, {data: 'a'}, {data: 'a'}]
+
+const fg2 = flow2(f, g) // 깔끔
+fg2(3)('b') // [{data: 'b'}, {data: 'b'}, {data: 'b'}]
+
 
 const ff2 = ({val1, val2 }: {val1: number, val2: number}) =>
   ({key}: {key: string}) =>
@@ -99,7 +109,7 @@ const chainFn = <Args extends ReadonlyArray<unknown>, R>
 
 const aaa = flow(ff2,f => (...args: Parameters<typeof f>) => ({data: f(...args)}))
 // const aaa = flow(ff2,  chainFn, v => ({data: v}))
-aaa({val: 10})({key: 'ddd'}) /*?*/
+// aaa({val: 10})({key: 'ddd'}) /*?*/
 
 const f1 = (a: number) => (b: string) => a.toString() === b
 const f2 = (c: boolean) => (d: string) => (e: string) => c ? d : e
