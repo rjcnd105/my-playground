@@ -240,7 +240,30 @@ const myTaskEitherBad: TE.TaskEither<{ message: string }, number> = TE.tryCatch(
 pipe(
   RTE.right(42),
   RTE.map((n: number) => n.toString()),
-) // 
+) //
+```
+- 중간에 side effect 섞기 (chainFirstIOK를 활용)
+```typescript
+const res = pipe(
+    login(0)(request),
+    TE.chainFirstIOK((success) => () => {
+      // side effect
+      const _setSessionData = setSessionData(session)
+      _setSessionData(SESSION_KEYS.NAME, formName)
+      _setSessionData(SESSION_KEYS.TOKEN, success.data.result.token)
+    }),
+    TE.matchEW(
+      () => async (): Promise<Message> => ({
+        status: 'error',
+        kind: 'login-fail',
+        text: '로그인에 실패했습니다.',
+      }),
+      () => async () =>
+        redirect(routerPaths.categoryList({ userName: formName }), {
+          headers: await getCookieHeader(await getSessionFromHeaders(request)),
+        })
+    )
+  )
 ```
 - apply, Applicative  
 sequenceS를 사용하면 병렬, sequenceT를 사용하면 독립 작업을 시행할 수 있다.  
