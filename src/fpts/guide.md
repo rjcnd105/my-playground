@@ -3,10 +3,7 @@ OOP의 클래스랑은 전혀 다른 용어이다. 타입 클래스는 ad hoc(�
 어떠한 형태 A에 대한 조작을 정의한 구조이다. 
 
 타입클래스의 인스턴스는 OOP의 인스턴스와는 다른 말이다. 
-여기에서의 인스턴스는 어디까지나 위에서 정의한 것 같은 타입클래스를 어느 형태에 대해서 구상화한 것이라고 생각해 주었으면 한다.
-
-여기선 편의상 타입클래스의 인스턴스도 그냥 타입클래스라 부르겠다.  
-그리고 타입클래스 F에 대해 F<A>에서 A에 대한 타입을 내부 유형이라고 부르겠다.   
+여기에서의 인스턴스는 어디까지나 위에서 정의한 것 같은 타입클래스를 어느 형태에 대해서 구상화한 것이라고 생각해 주었으면 한다. 
 
 ### 용어 (목차)
 <font size="2" color="#888">용어의 코드는 전부 example</font>
@@ -31,13 +28,14 @@ OOP의 클래스랑은 전혀 다른 용어이다. 타입 클래스는 ad hoc(�
 lifting 함수인 ```of```를 제공.  
 
 **Monad&lt;N...&gt;**  
-자기사상 Functor Monoid.   
+자기사상이 가능한 Functor Monoid.   
 ```chain(flatmap), of, map, ap```을 제공  
 이것들을 가지고 있으면 Monad라고 보면 된다. (ex: Option Monad, Either Monad ...)  
-_monadic laws_(모노이드의 법칙과도 같음)
-- Left Identity: of(x).chain(f) == of(f(x))
-- Right Identity: of(x).chain(of) = of(x)
-- Associativity: of(x).chain(f).chain(g) = of(x).chain(flow(f, g))  
+Monad 특성들을 가진 타입클래스를 Monadic하다 라고도 함.  
+_monadic laws_(모노이드의 법칙과도 같음)  
+- Left Identity: of(x).chain(f) == of(f(x))  
+- Right Identity: of(x).chain(of) = of(x)  
+- Associativity: of(x).chain(f).chain(g) = of(x).chain(flow(f, g))   
 
 **Option&lt;A&gt;**  
 있음(```Some<A>```) or 없음(```none```)  
@@ -108,26 +106,26 @@ T: ```R -> () -> Promise<Either<E, A>>```
 ---
 ### 메소드  
 **map:** 함수를 받아 내부에 적용시킴 - Functor의 구현  
-**ap:** 타입클래스로 랩핑된 함수를 받아 내부에 적용시킴 map의 역순과도 같음 - Apply의 구현  
+**ap:** 모나드로 감싸진 함수를 받아 내부에 적용시킴 map의 역순과도 같음 - Apply의 구현  
 **apS:** 모나드에 struct(object) 형태로 값을 추가 적용시킴.    
-**flab:** map의 정확한 역순. ap는 값을 타입클래스로 받지만, flab은 바로 내부로 받음. ap의 간소화 버전인듯.  
-**of:** 순수한 값을 통해 타입클래스로 lifting - Pointed의 구현  
-**chain:** 현재 타입클래스로부터 함수를 거쳐 현재 타입클래스를 리턴함. map, ap와 같이 값이(ex: Either의 left) 통과하지 않으므로 통합적인 재처리에 유용 - Chain의 구현  
-**chain{Monad}K:** 해당 Monad 내부를 디코딩한 값을 받아 {Monad}에 적힌 low-level을 타입클래스로 lifting함.  
-**Do:** 해당 타입클래스의 빈 값을 생성.[ Monad를 chain하는 자기 사상을 사용할때 sugar 역할로 많이 쓰임.](https://gcanti.github.io/fp-ts/guides/do-notation.html)  
-**duplicate:** 타입클래스를 중첩시킨다.  
+**flab:** map의 정확한 역순. ap는 값을 모나드로 받지만, flab은 바로 내부로 받음. ap의 간소화 버전인듯.  
+**of:** 순수한 값을 통해 모나드로 lifting - Pointed의 구현  
+**chain:** 현재 모나드로부터 함수를 거쳐 현재 모나드를 리턴함. map, ap와 같이 값이(ex: Either의 left) 통과하지 않으므로 통합적인 재처리에 유용 - Chain의 구현  
+**chain{Monad}K:** 해당 모나드 내부를 디코딩한 값을 받아 {Monad}에 적힌 low-level을 모나드로 lifting함.  
+**Do:** 해당 모나드로 빈 값을 생성.[ Monad를 chain하는 자기 사상을 사용할때 sugar 역할로 많이 쓰임.](https://gcanti.github.io/fp-ts/guides/do-notation.html)  
+**duplicate:** 모나드를 중첩시킨다.  
 **from{Monad}:**  해당 모나드로부터 현재 모나드로의 변환.  
 **alt:** 대안, 실패할 경우만 실행되며(left, none 등) 실패할 경우에 다른 Effect를 제공한다.  
-**fold:** 타입클래스 내부의 값을 반환. 단, 반환 유형이 같아야 한다. (ex: none => "none", some(v) => "v: ${v}")  
-**foldW:** 타입클래스 내부의 값을 반환, 반환 유형이 같을 필요가 없다. (ex: none => 0, some(v) => "v: ${v}"가 가능).  W 붙으면 전부 이런 식  
-**match:** fold와의 차이는 Effect하지 않다는 것. matchE를 사용하면 fold와 같다. fold가 Effect하지 않은 타입클래스의 경우는 match와 fold가 같다.  
-**apFirst, apSecond:** 두 타입클래스를 취하고 첫번째(First) 또는 두번째(Second) 유형생성자를 반환  
-**sequenceArray:** 타입클래스 F에 대해 ```Array<F<A>>```를 ```F<Array<A>>``` 형태로 변환.  
-**tryCatch:** 정상적인 값의 경우 성공, throw되는 경우 실패로 처리하여 타입클래스로 감싼다.    
+**fold:** 모나드 내부의 값을 반환. 단, 반환 유형이 같아야 한다. (ex: none => "none", some(v) => "v: ${v}")  
+**foldW:** 모나드 내부의 값을 반환, 반환 유형이 같을 필요가 없다. (ex: none => 0, some(v) => "v: ${v}"가 가능).  W 붙으면 전부 이런 식  
+**match:** fold와의 차이는 Effect하지 않다는 것. matchE를 사용하면 fold와 같다. fold가 Effect하지 않은 모나드의 경우는 match와 fold가 같다.  
+**apFirst, apSecond:** 두 모나드를 취하고 첫번째(First) 또는 두번째(Second) 모나드를 반환  
+**sequenceArray:** 모나드 F에 대해 ```Array<F<A>>```를 ```F<Array<A>>``` 형태로 변환.  
+**tryCatch:** 정상적인 값의 경우 성공, throw되는 경우 실패로 처리하여 모나드로 감싼다.    
 **sequenceS:** 내부 유형을 객체(Struct)로 변환  
 **sequenceT:** 내부 유형을 튜플로 변환  
-**flatten:** 중첩된 타입클래스를 평탄화 한다. ```F<F<A>> -> F<A>```   
-**flatMap:** map으로 유형을 타입클래스로 한번 더 감싼 후, flatten을 한 것(F<A> -> F<F<A>> -> F<A>). ```flatMap(g) ∘ f = flatten ∘ map(g) ∘ f```  
+**flatten:** 중첩된 모나드를 평탄화 한다. ```F<F<A>> -> F<A>```   
+**flatMap:** map으로 유형을 모나드를 한번 더 감싼 후, flatten을 한 것(F<A> -> F<F<A>> -> F<A>). ```flatMap(g) ∘ f = flatten ∘ map(g) ∘ f```  
 **orElse:** 실패에 대한 처리.  
 **chainFirst{Monad}K:** 첫번째 인수의 리턴되는 해당 Monad의 값을 무시함. [pipe 중간에 side effect 처리에 유용하게 쓰임](https://github.com/gcanti/fp-ts/issues/1039).    
 
