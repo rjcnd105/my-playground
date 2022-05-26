@@ -6,12 +6,11 @@ import * as IO from 'fp-ts/lib/IO'
 import * as E from 'fp-ts/lib/Either'
 import * as R from 'fp-ts/lib/Reader'
 import * as ID from 'fp-ts/lib/Identity'
-import { Response } from 'node-fetch'
 import { apply, flow, identity, pipe } from 'fp-ts/lib/function'
 import axios, { AxiosResponse } from 'axios'
 import { reduce } from 'fp-ts/lib/Foldable'
 import { composeWithCurriedFunction } from '../fptsUtils/composeWithCurriedFunction'
-import { flow2 } from '../fptsUtils/flow2/flow2'
+import { flow2 } from '../utils/flow2/flow2'
 
 interface ApiError {
   code: number
@@ -65,13 +64,13 @@ const myTask1 = getTodo('1')() /*?*/
 
 
 // 하나로 모으기 TaskEither<ApiError, AxiosResponse<Todo>> -> Task<Response>
-const t11 = await pipe(
-  getTodo('10'),
-  TE.match(
-    (apiError) => new Response('FAIL URL'),
-    (res) => new Response('SUCCESS URL')
-  )
-) /*?*/
+// const t11 = await pipe(
+//   getTodo('10'),
+//   TE.match(
+//     (apiError) => new Response('FAIL URL'),
+//     (res) => new Response('SUCCESS URL')
+//   )
+// ) /*?*/
 
 const f = (a: number) => (b: string) => new Array<string>(a).fill(b)
 const g = (arr: string[]) => arr.map(str => ({data: str}))
@@ -114,7 +113,7 @@ const aaa = flow(ff2,f => (...args: Parameters<typeof f>) => ({data: f(...args)}
 const f1 = (a: number) => (b: string) => a.toString() === b
 const f2 = (c: boolean) => (d: string) => (e: string) => c ? d : e
 const f3 = composeWithCurriedFunction(f1, f2)
-f3(1)('1')('ok')('x') // ok
+// f3(1)('1')('ok')('x') // ok
 
 
 // Is there a good way to synthesize a higher-order function as the second return value?

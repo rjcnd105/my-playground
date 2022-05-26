@@ -62,4 +62,4 @@ function flow2(abc, cd, de, ef, fg, gh, hi, ij, jk) {
   return;
 }
 
-module.exports.flow2 = flow2
+exports.flow2 = flow2

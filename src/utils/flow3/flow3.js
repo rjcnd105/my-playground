@@ -86,4 +86,4 @@ function flow3(abcd, de, ef, fg, gh, hi, ij, jk, kl) {
   return;
 }
 
-module.exports.flow3 = flow3
+exports.flow3 = flow3
