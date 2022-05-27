@@ -8,7 +8,7 @@ function flow3(abcd, de, ef, fg, gh, hi, ij, jk, kl) {
         return function bc() {
           const argumentsBC = arguments
           return function cd() {
-            de(abcd.apply(this, argumentsAB).apply(this, argumentsBC).apply(this, arguments));
+            return de(abcd.apply(this, argumentsAB).apply(this, argumentsBC).apply(this, arguments));
           }
         }
       };
@@ -18,7 +18,7 @@ function flow3(abcd, de, ef, fg, gh, hi, ij, jk, kl) {
         return function bc() {
           const argumentsBC = arguments
           return function cd() {
-            ef(de(abcd.apply(this, argumentsAB).apply(this, argumentsBC).apply(this, arguments)));
+            return ef(de(abcd.apply(this, argumentsAB).apply(this, argumentsBC).apply(this, arguments)));
           }
         }
       };
@@ -28,7 +28,7 @@ function flow3(abcd, de, ef, fg, gh, hi, ij, jk, kl) {
         return function bc() {
           const argumentsBC = arguments
           return function cd() {
-            fg(ef(de(abcd.apply(this, argumentsAB).apply(this, argumentsBC).apply(this, arguments))));
+            return fg(ef(de(abcd.apply(this, argumentsAB).apply(this, argumentsBC).apply(this, arguments))));
           }
         }
       };
@@ -38,7 +38,7 @@ function flow3(abcd, de, ef, fg, gh, hi, ij, jk, kl) {
         return function bc() {
           const argumentsBC = arguments
           return function cd() {
-            gh(fg(ef(de(abcd.apply(this, argumentsAB).apply(this, argumentsBC).apply(this, arguments)))));
+            return gh(fg(ef(de(abcd.apply(this, argumentsAB).apply(this, argumentsBC).apply(this, arguments)))));
           }
         }
       };
@@ -48,7 +48,7 @@ function flow3(abcd, de, ef, fg, gh, hi, ij, jk, kl) {
         return function bc() {
           const argumentsBC = arguments
           return function cd() {
-            hi(gh(fg(ef(de(abcd.apply(this, argumentsAB).apply(this, argumentsBC).apply(this, arguments))))));
+            return hi(gh(fg(ef(de(abcd.apply(this, argumentsAB).apply(this, argumentsBC).apply(this, arguments))))));
           }
         }
       };
@@ -58,7 +58,7 @@ function flow3(abcd, de, ef, fg, gh, hi, ij, jk, kl) {
         return function bc() {
           const argumentsBC = arguments
           return function cd() {
-            ij(hi(gh(fg(ef(de(abcd.apply(this, argumentsAB).apply(this, argumentsBC).apply(this, arguments)))))));
+            return ij(hi(gh(fg(ef(de(abcd.apply(this, argumentsAB).apply(this, argumentsBC).apply(this, arguments)))))));
           }
         }
       };
@@ -68,7 +68,7 @@ function flow3(abcd, de, ef, fg, gh, hi, ij, jk, kl) {
         return function bc() {
           const argumentsBC = arguments
           return function cd() {
-            jk(ij(hi(gh(fg(ef(de(abcd.apply(this, argumentsAB).apply(this, argumentsBC).apply(this, arguments))))))));
+            return jk(ij(hi(gh(fg(ef(de(abcd.apply(this, argumentsAB).apply(this, argumentsBC).apply(this, arguments))))))));
           }
         }
       };
@@ -78,7 +78,7 @@ function flow3(abcd, de, ef, fg, gh, hi, ij, jk, kl) {
         return function bc() {
           const argumentsBC = arguments
           return function cd() {
-            kl(jk(ij(hi(gh(fg(ef(de(abcd.apply(this, argumentsAB).apply(this, argumentsBC).apply(this, arguments)))))))));
+            return kl(jk(ij(hi(gh(fg(ef(de(abcd.apply(this, argumentsAB).apply(this, argumentsBC).apply(this, arguments)))))))));
           }
         }
       };
