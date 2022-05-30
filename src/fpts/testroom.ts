@@ -3,14 +3,16 @@ import * as RT from 'fp-ts/lib/ReaderTask'
 import * as T from 'fp-ts/lib/Task'
 import * as TE from 'fp-ts/lib/TaskEither'
 import * as IO from 'fp-ts/lib/IO'
+import * as TO from 'fp-ts/lib/TaskOption'
+import * as O from 'fp-ts/lib/Option'
 import * as E from 'fp-ts/lib/Either'
 import * as R from 'fp-ts/lib/Reader'
 import * as ID from 'fp-ts/lib/Identity'
 import { apply, flow, identity, pipe } from 'fp-ts/lib/function'
 import axios, { AxiosResponse } from 'axios'
 import { reduce } from 'fp-ts/lib/Foldable'
-import { composeWithCurriedFunction } from '../fptsUtils/composeWithCurriedFunction'
 import { flow2 } from '../utils/flow2/flow2'
+import { composeWithCurriedFunction } from '../utils/composeWithCurriedFunction/composeWithCurriedFunction'
 
 interface ApiError {
   code: number
@@ -143,5 +145,10 @@ function t1() {
 
 t1()
 
+async function t2() {
+  const to = pipe(TO.some(10), TO.filterMap(O.fromPredicate(v => v > 20)))
+  await to() /*?*/ // none
+}
+t2()
 
 export default {}

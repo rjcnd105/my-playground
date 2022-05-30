@@ -179,6 +179,123 @@ pipe(
 ) // { _tag: 'Some', value: { age: 3, name: 'gggruru } }
 ```
 
+**struct bind**  
+```typescript
+import * as I from 'fp-ts/lib/Identity'
+import * as O from 'fp-ts/lib/Option'
+import * as E from 'fp-ts/lib/Either'
+
+
+// pick
+const pickOut = pipe({ a: 1, b: 'two', c: [true] }, ({ a, c }) => ({ a, c }))
+assert.deepStrictEqual(pickOut, { a: 1, c: [true] })
+
+// omit
+const omitOut = pipe({ a: 1, b: 'two', c: [true] }, ({ b, ...rest }) => rest)
+assert.deepStrictEqual(omitOut, { a: 1, c: [true] })
+
+// evolve
+const evolveOut = pipe({ a: 'a', b: 1, c: 'abc' }, ({ a, b, ...rest }) =>
+  pipe(
+    rest,
+    I.bind('a', () => a.length),
+    I.bind('b', () => b * 2)
+  )
+)
+assert.deepStrictEqual(evolveOut, { a: 1, b: 2, c: 'abc' })
+
+// refine
+const refineOut1 = pipe(
+  O.some({ a: 'a', b: 1, c: 'abc' }),
+  O.chainFirst((x) => O.guard(x.a === 'a' && x.b === 1))
+)
+assert.deepStrictEqual(refineOut1, O.some({ a: 'a', b: 1, c: 'abc' }))
+
+const refineOut2 = pipe(
+  O.some({ a: 'a', b: 2, c: 'abc' }),
+  O.chainFirst((x) => O.guard(x.a === 'a' && x.b === 1))
+)
+assert.deepStrictEqual(refineOut2, O.none)
+
+const guardEither = <E>(e: () => E) => (p: boolean): E.Either<E, void> =>
+  p ? E.right(undefined) : E.left(e())
+
+const refineOut3 = pipe(
+  E.right({ a: 'a', b: 2, c: 'abc' }),
+  E.chainFirst((x) => guardEither(() => 'error a')(x.a === 'a')),
+  E.chainFirst((x) => guardEither(() => 'error b')(x.b === 1))
+)
+assert.deepStrictEqual(refineOut3, E.left('error b'))
+
+
+// parse
+const parseOut1 = pipe({ a: 'a', b: 1, c: 'abc' }, ({ a, b, ...rest }) =>
+  pipe(
+    E.right(rest),
+    E.bind('a', () => (a === 'a' ? E.right(1) : E.left(`Not 'a'`))),
+    E.bindW('b', () => (b === 1 ? E.right('a') : E.left(42)))
+  )
+)
+assert.deepStrictEqual(parseOut1, E.right({ a: 1, b: 'a', c: 'abc' }))
+
+const parseOut2 = pipe({ a: 'b', b: 1, c: 'abc' }, ({ a, b, ...rest }) =>
+  pipe(
+    E.right(rest),
+    E.bind('a', () => (a === 'a' ? E.right(1) : E.left(`Not 'a'`))),
+    E.bindW('b', () => (b === 1 ? E.right('a') : E.left(42)))
+  )
+)
+assert.deepStrictEqual(parseOut2, E.left(`Not 'a'`))
+
+const parseOut3 = pipe({ a: 'a', b: 1, c: 'abc' }, ({ a, b, ...rest }) =>
+  pipe(
+    E.right(rest),
+    E.bind('a', () => (a === 'a' ? E.right(1) : E.left(`Not 'a'`))),
+    E.bindW('b', () => (b === 1 ? E.right('a') : E.left(42)))
+  )
+)
+assert.deepStrictEqual(parseOut1, E.right({ a: 1, b: 'a', c: 'abc' }))
+
+const parseOut4 = pipe({ a: 'b', b: 1, c: 'abc' }, ({ a, b, ...rest }) =>
+  pipe(
+    E.right(rest),
+    E.bind('a', () => (a === 'a' ? E.right(1) : E.left(`Not 'a'`))),
+    E.bindW('b', () => (b === 1 ? E.right('a') : E.left(42)))
+  )
+)
+assert.deepStrictEqual(parseOut2, E.left(`Not 'a'`))
+
+// do
+const traverseSOut = pipe(
+  O.some({ a: 1, b: 'b', c: 'abc' }),
+  O.chain(({ a, b, ...rest }) =>
+    pipe(
+      O.some(rest),
+      O.bind('a', () => (a <= 2 ? O.some(a.toString() + b) : O.none)),
+      O.bind('b', () => (b.length <= 2 ? O.some(b.length) : O.none))
+    )
+  )
+)
+assert.deepStrictEqual(traverseSOut, O.some({ a: '1b', b: 1, c: 'abc' }))
+
+const doOut = pipe(
+  3,
+  I.bindTo('a'),
+  I.bind('b', () => false),
+  I.bind('c', ({ a }) => a.toString())
+)
+assert.deepStrictEqual(doOut, { a: 3, b: false, c: '3' })
+
+// set
+const setOut = pipe({ a: 1, b: 'a' }, ({ a, ...rest }) =>
+  pipe(
+    rest,
+    I.bind('a', () => 'a')
+  )
+)
+assert.deepStrictEqual(setOut, { a: 'a', b: 'a' })
+```
+
 **ReaderTaskEither 활용 예**
 - ReaderTaskEither에서 의존성 주입에 상관 없는 TaskEither로의 사용  
 ```ReaderTaskEither<unknown, E, A>``` 처럼 사용하면 된다.  
