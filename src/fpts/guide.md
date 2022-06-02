@@ -22,7 +22,7 @@ import { ap, map, of } from 'fp-ts/Array'
 import { pipe } from 'fp-ts/function'
 
 const f = (s1: string) => (n: number) => (s2: string) => s1 + n + s2
-assert.deepStrictEqual(pipe(['a', 'b'], map(f), ap([1, 2]), ap(['😀', '😫', '😎'])), [
+assert.deepStrictEqual(pipe(of(f), ap(['a', 'b']), ap([1, 2]), ap(['😀', '😫', '😎'])), [
     'a1😀',
     'a1😫',
     'a1😎',
