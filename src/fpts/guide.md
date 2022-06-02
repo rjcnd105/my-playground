@@ -13,32 +13,6 @@ OOP의 클래스랑은 전혀 다른 용어이다. 타입 클래스는 ad hoc(�
 **destructors:** 타입클래스 유형 반환자 ```F<A> -> A```  
 **instances:** 타입클래스의 특징적인 함수들
 
-### 추가 용어
-**applicative:** 함수처럼 적용할 수 있는 것  
-**applicative Functor:** 내부에 함수(applicative)를 가진 사상(Functor). 다른 사상을 apply 시킬 수 있다.  
-example)
-```typescript
-import { ap, map, of } from 'fp-ts/Array'
-import { pipe } from 'fp-ts/function'
-
-const f = (s1: string) => (n: number) => (s2: string) => s1 + n + s2
-assert.deepStrictEqual(pipe(of(f), ap(['a', 'b']), ap([1, 2]), ap(['😀', '😫', '😎'])), [
-    'a1😀',
-    'a1😫',
-    'a1😎',
-    'a2😀',
-    'a2😫',
-    'a2😎',
-    'b1😀',
-    'b1😫',
-    'b1😎',
-    'b2😀',
-    'b2😫',
-    'b2😎',
-])
-```
-
-
 ---
 ### 타입클래스
 **Apply&lt;N...&gt;**   
