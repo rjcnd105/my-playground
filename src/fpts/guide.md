@@ -18,6 +18,9 @@ OOP의 클래스랑은 전혀 다른 용어이다. 타입 클래스는 ad hoc(�
 **applicative Functor:** 내부에 함수(applicative)를 가진 사상(Functor). 다른 사상을 apply 시킬 수 있다.  
 example)
 ```typescript
+import { ap, map, of } from 'fp-ts/Array'
+import { pipe } from 'fp-ts/function'
+
 const f = (s1: string) => (n: number) => (s2: string) => s1 + n + s2
 assert.deepStrictEqual(pipe(['a', 'b'], map(f), ap([1, 2]), ap(['😀', '😫', '😎'])), [
     'a1😀',
