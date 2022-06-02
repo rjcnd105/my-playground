@@ -378,7 +378,7 @@ const res = pipe(
       }),
       () => async () =>
         redirect(routerPaths.categoryList({ userName: formName }), {
-          headers: await getCookieHeader(await getSessionFromHeaders(request)),
+          headers: await getCookieHeader(session),
         })
     )
   )
