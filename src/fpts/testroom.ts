@@ -13,6 +13,7 @@ import axios, { AxiosResponse } from 'axios'
 import { reduce } from 'fp-ts/lib/Foldable'
 import { flow2 } from '../utils/flow2/flow2'
 import { composeWithCurriedFunction } from '../utils/composeWithCurriedFunction/composeWithCurriedFunction'
+import { Window } from 'happy-dom'
 
 interface ApiError {
   code: number
@@ -62,7 +63,7 @@ const getTodo: RTE.ReaderTaskEither<
     )
 
 
-const myTask1 = getTodo('1')() /*?*/
+const myTask1 = getTodo('1')()
 
 
 // 하나로 모으기 TaskEither<ApiError, AxiosResponse<Todo>> -> Task<Response>
@@ -144,11 +145,45 @@ function t1() {
 }
 
 t1()
-
+const window = new Window()
 async function t2() {
   const to = pipe(TO.some(10), TO.filterMap(O.fromPredicate(v => v > 20)))
   await to() /*?*/ // none
+
+  const to2 = TE.tryCatch(
+    () => window.fetch('https://jsonplaceholdesr.typicode.com/todoss/142423232'),
+    e => e
+  )
+  const to3 = TE.tryCatch(
+    () => window.fetch('https://jsonplaceholder.typicode.com/posts/1'),
+    e => e
+  )
+
+  const fet1 = window.fetch('https://jsonplaceholder.typicode.com/posts/1')
+  fet1.then(d => {
+    d.json() /*?*/
+  }) /*?*/
+  await readResData(await fet1)() /*?*/
+  await readResData(await fet1)() /*?*/
+
+  pipe(to3, TE.chainFirstIOK((res) => () => readResData(res)), TE.chainFirstIOK((res) => () => readResData(res))) /*?*/
+
+  const to3r = await to3()
+
+
+}
+
+type Post = {
+  "userId": number,
+  "id": number,
+  "title": string,
+  "body": string
+}
+const fff = (id: string) => TE.tryCatch( () => window.fetch('https://jsonplaceholder.typicode.com/posts/1'), E.toError)
+export function readResData<A>(r: Pick<Response, 'json'>) {
+  return TO.tryCatch<A>(() => r.json())
 }
 t2()
 
 export default {}
+
