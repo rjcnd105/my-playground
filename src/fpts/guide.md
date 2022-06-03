@@ -130,7 +130,7 @@ T: ```R -> () -> Promise<Either<E, A>>```
 
 ---
 ### 접미사 
-**W:** Less strict version. 더 나은 타입 추론을 위해 사용할 수도 있음.  
+**W:** Less strict version. 타입클래스 내 값 타입을 병합하며, 더 나은 타입 추론을 위해 사용할 수도 있다.  
 **S:** Structs의 약어. 즉 내부 유형을 객체로 변환  
 **K:** Kleisli의 약어. ```A -> F<B>``` 와 같은 서명을 지님   
 **T:** Transformer의 약어. 모나드 변환기를 의미. 그러나 sequenceT에서의 T는 Tuple을 의미한다.     
