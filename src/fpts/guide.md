@@ -114,7 +114,7 @@ T: ```R -> () -> Promise<Either<E, A>>```
 **Do:** 해당 모나드로 빈 값을 생성.[ Monad를 chain하는 자기 사상을 사용할때 sugar 역할로 많이 쓰임.](https://gcanti.github.io/fp-ts/guides/do-notation.html)  
 **duplicate:** 모나드를 중첩시킨다.  
 **from{Monad}:**  해당 모나드로부터 현재 모나드로의 변환.  
-**alt:** 대안, 실패할 경우만 실행되며(left, none 등) 실패할 경우에 다른 Effect를 제공한다.  
+**alt:** 대안, 실패할 경우만 실행되며(left, none 등) 실패할 경우에 기존 값과 별개의 다른 Effect를 리턴한다.  
 **fold:** 모나드 내부의 값을 반환. 단, 반환 유형이 같아야 한다. (ex: none => "none", some(v) => "v: ${v}")  
 **foldW:** 모나드 내부의 값을 반환, 반환 유형이 같을 필요가 없다. (ex: none => 0, some(v) => "v: ${v}"가 가능).  W 붙으면 전부 이런 식  
 **match:** fold와의 차이는 Effect하지 않다는 것. matchE를 사용하면 fold와 같다. fold가 Effect하지 않은 모나드의 경우는 match와 fold가 같다.  
@@ -130,7 +130,7 @@ T: ```R -> () -> Promise<Either<E, A>>```
 
 ---
 ### 접미사 
-**W:** Less strict version. 더 나은 타입 추론을 위해 사용할 수도 있음.  
+**W:** Less strict version. 타입클래스 내 값 타입을 병합하며, 더 나은 타입 추론을 위해 사용할 수도 있다.  
 **S:** Structs의 약어. 즉 내부 유형을 객체로 변환  
 **K:** Kleisli의 약어. ```A -> F<B>``` 와 같은 서명을 지님   
 **T:** Transformer의 약어. 모나드 변환기를 의미. 그러나 sequenceT에서의 T는 Tuple을 의미한다.     
