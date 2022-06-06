@@ -18,7 +18,7 @@ type _MakeTuple<T> = <T>(v: T) => [T, T]
 // 위의 2가지 방법으로 충족을 할 수 없는 것이 있다.
 // 바로 형태(타입클래스)는 지키면서 제네릭 인자에 대한 타입 추론은 시키는 것이다.
 
-// 1번 방식 (Error!)
+// 위의 1번 방식 (Error!)
 // id: number처럼 확정지었는데 이는 위에서의
 // R, A은 모든 타입을 받을 수 있다는 제네릭이라는 선언을 무시한 것이니 타입에러가 발생한다.
 type LazyReaderPromise = <R, A>(a: R) => Promise<A>
@@ -30,7 +30,7 @@ const getTodoDataStream: LazyReaderPromise = async (id: number) => {
   return new Error('Failed')
 }
 
-// 2번 방식
+// 위의 2번 방식
 // 타입을 명시해줘야하는 2번 방식은 타입추론을 할 수 없어 일일히 써줘야한다.
 // LazyReaderPromise의 형식을 지키기만 하면 되는 것이라면, 이는 굉장히 불필요한 일이다.
 // 타입클래스처럼 사용한다면 저 구현에 대한 R, A 타입은 상관 없는 경우가 많다.
@@ -44,7 +44,7 @@ const getTodoDataStream2: TypedLazyReaderPromise<number, ReadableStream<Uint8Arr
     return new Error('Failed')
   }
 
-// 3번 방식
+// 3번 방식 (new!)
 // identity function
 // 형태를 유지하면서 제네릭 인자 타입 추론을 시키려면 이 3번째 방법이 필요하다.
 const lazyReaderPromise = <R, A>(lrp: TypedLazyReaderPromise<R, A>) => lrp
@@ -67,5 +67,5 @@ const getTodoDataStream3 = lazyReaderPromise(async (id: number) => {
 
 
 const makeStringTuple: TypedMakeTuple<string> = (v) => [v, v] // OK
-const makeTupleK: MakeTupleK = (f) => f
+// const makeTupleK: MakeTupleK = (f) => f
 

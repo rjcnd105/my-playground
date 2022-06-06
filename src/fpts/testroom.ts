@@ -12,7 +12,7 @@ import { apply, flow, identity, pipe } from 'fp-ts/lib/function'
 import axios, { AxiosResponse } from 'axios'
 import { reduce } from 'fp-ts/lib/Foldable'
 import { flow2 } from '../utils/flow2/flow2'
-import { composeWithCurriedFunction } from '../utils/composeWithCurriedFunction/composeWithCurriedFunction'
+import { composeWithCurriedFunction } from '../otherUtils/composeWithCurriedFunction/composeWithCurriedFunction'
 import { Window } from 'happy-dom'
 
 interface ApiError {

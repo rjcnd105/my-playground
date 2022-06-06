@@ -46,20 +46,10 @@ export type CollectionIntersection<Arr extends any[]> = UnionToIntersection<
 //   ? [...UnionToIntersection<T>]
 //   : never
 
-type test12312 = CollectionIntersection<[{ a: 20; b: 30 }, { c: 30 }]> // {a:20, b:30} & {c:30}
+// type test12312 = CollectionIntersection<[{ a: 20; b: 30 }, { c: 30 }]> // {a:20, b:30} & {c:30}
 export interface ClassT extends Function {
   new (...args: any): any
 }
-
-class AA {
-  constructor({ a, b }: { a: number; b: number }) {}
-}
-
-class BB {
-  constructor({ c }: { c: string }) {}
-}
-
-type eadsf = ConstructorParameters<typeof AA>
 
 export type AAA<U> = U extends any ? (k: U) => void : never
 
@@ -70,17 +60,6 @@ type ArrIntersection<A> = (A extends any[] ? (a: A) => void : never) extends (
 ) => void
   ? T[number]
   : never
-
-type fds = ArrIntersection<[1, 2, 3]>
-
-const arr = [{ a: 20, b: 30 }, { c: 40 }]
-type A = typeof arr[0]
-type B = UnionToIntersection<A>
-type C = UnionToIntersection<'A' | 10>
-type D = UnionToIntersection<{ a: 20 } | { b: 30 }>
-
-const d = typeSafeAssign({ a: 20, b: 30 }, { c: 30 })
-const d2 = typeSafeAssign(1, 's')
 
 export type AwaitedReturn<T extends (...args: any[]) => Promise<any>> = Awaited<
     ReturnType<T>
@@ -95,4 +74,9 @@ export type IdentifiableString<T> = T extends string
         ? false
         : true
     : false
+
+
+type C<A> = { [K in keyof A]: A[K] }
+
+export type Optional<A, B extends keyof A> = C<Omit<A, B> & { [K in B]?: A[K] }>
 
