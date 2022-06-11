@@ -78,8 +78,16 @@ const scrollToY = (
         : (scrollEl.scrollTop = positionValue)
 }
 
+const onEnter = (fn: React.KeyboardEventHandler<HTMLInputElement>) => (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
+        e.preventDefault()
+        return fn(e)
+    }
+}
+
 const domUtils = {
     inputChangeTrigger,
-    scrollToY
+    scrollToY,
+    onEnter
 }
 export default domUtils

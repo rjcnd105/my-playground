@@ -17,7 +17,11 @@
     "jsx": "react-jsx",
     "types": ["vite/client", "src/modules"]
   },
-  "include": ["**/*.ts", "./**/*.tsx"],
+  "include": [
+    "**/*.ts",
+    "./**/*.tsx",
+    "../../Library/Caches/JetBrains/WebStorm2022.1/javascript/typings/jest/28.1.1/node_modules/@types/jest/index.d.ts"
+  ],
   "exclude": ["node_modules"]
 }
 
