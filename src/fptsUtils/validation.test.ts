@@ -13,13 +13,13 @@ validNameLength("#test")(right('asdfsdfsdfds')) /*?*/
 
 const my_validation = pipe(right(''), validNameLength("#test"), validNameAA("#test")) /*?*/
 
-test('"aaaa" 길이 밸리데이션 통과', () => {
+test('"aaaa" 길이 밸리데이션', () => {
   expect(validNameLength("#test")(right('aaaa'))).toStrictEqual(right('aaaa'))
 })
-test('"열글자에요열글자에요" 길이 밸리데이션 실패', () => {
+test('"열글자에요열글자에요" 길이 밸리데이션', () => {
   expect(isLeft(validNameLength("#test")(right('열글자에요열글자에요')))).toBe(true)
 })
-test('빈 문자열 밸리데이션 2개 실패', () => {
+test('빈 문자열 밸리데이션 2개', () => {
   expect(my_validation).toStrictEqual(
     left({
       value: '',
