@@ -22,19 +22,36 @@ export type ValidationErrors = {
 
 export type Validation<A> = Either<ValidationErrors, A>
 
-// 모든 에러 검출시 사용
+/*
+ * 모든 에러 검출시 사용
+ */
 export const validator = <A>(pred: Predicate<A>, errorMessage: Message) =>
   E.match<ValidationErrors, A, Validation<A>>(
     left => E.left(pred(left.value as A) ? left : { value: left.value, errors: concat(left.errors)([errorMessage]) }),
-    value => (pred(value) ? E.right(value) : E.left({ value, errors: [errorMessage] })),
+    value => (pred(value) ? E.right(value) : E.left({ value, errors: [errorMessage] })) /*?*/,
   )
 
-// 각 identifier당 하나의 에러를 검출할 때
-// 일반적인 UI에 쉽게 사용하기 위한 것
+/*
+ * 각 identifier당 하나의 에러를 검출할 때 일반적인 UI에 쉽게 사용하기 위한 것
+ * @example
+ * const nameLengthMax = singleErrorValidator((name: RoomModel['name']) => name.length <= 6, '이름은 6자까지 입력 가능해')
+ * const nameLengthMin = singleErrorValidator((name: RoomModel['name']) => name.length !== 0, '이름을 입력해줘')
+ * const nameValidator = flow(nameLengthMin, nameLengthMax)
+ *  */
 export const singleErrorValidator = <A>(pred: Predicate<A>, errorMessage: Message) =>
   E.chain<Message, A, A>(value => (pred(value) ? E.right(value) : E.left(errorMessage)))
 
 // validation을 하기 위해 value로부터 검증 가능한 Either 모나드로 끌어올림
 export const liftE = <A>(v: A) => E.of(v)
-// struct 형태에 대한 전체 검증
-export const validatorS = sequenceS(E.Apply)
+
+/*
+ * struct 형태에 대한 검증
+ * @example
+ * const validatorStruct = {
+ *   name: nameValidator(E.of("abcd")),
+ *   age: ageValidator(E.of(12))
+ * }
+ * const validation = foldValidatorS(validatorStruct)
+ * // -> Right<{ name: string, age: number }> | Left<ValidationErrors>
+ * */
+export const foldValidatorS = sequenceS(E.Apply)
