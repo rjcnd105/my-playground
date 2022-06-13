@@ -2,10 +2,14 @@ import * as RTE from 'fp-ts/lib/ReaderTaskEither'
 import * as RT from 'fp-ts/lib/ReaderTask'
 import * as T from 'fp-ts/lib/Task'
 import * as TE from 'fp-ts/lib/TaskEither'
+
+import Endo from 'fp-ts/lib/Endomorphism'
 import * as IO from 'fp-ts/lib/IO'
 import * as O from 'fp-ts/lib/Option'
 import * as E from 'fp-ts/lib/Either'
 import * as R from 'fp-ts/lib/Reader'
+import * as M from 'fp-ts/lib/Monoid'
+import * as ReadonlyArray from 'fp-ts/lib/ReadonlyArray'
 import * as ID from 'fp-ts/lib/Identity'
 import { apply, flow, identity, pipe } from 'fp-ts/lib/function'
 import axios, { AxiosResponse } from 'axios'
@@ -51,3 +55,16 @@ sequenceS(O.Monad)({
     O.fromPredicate(stringUtils.isNotEmptyStr)
   ),
 })
+
+type Identifier = string
+const injectIdentifier =
+  (identifier: Identifier) =>
+    <A>(readerValidator: R.Reader<Identifier, Endo.Endomorphism<A>>) =>
+      readerValidator(identifier)
+
+export const concatAfterInjectingIdentifier =
+  (identifier: Identifier) =>
+    <A, E extends Endo.Endomorphism<A>>(...readerValidators: readonly R.Reader<Identifier, Endo.Endomorphism<A>>[]) => {
+      const injectedIdentifier = injectIdentifier(identifier)
+      return pipe(ReadonlyArray.map(injectedIdentifier)(readerValidators), M.concatAll(Endo.getMonoid<A>()))
+    }
