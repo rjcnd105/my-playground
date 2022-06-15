@@ -1,6 +1,6 @@
-import { chain } from 'fp-ts/es6/Either'
 import { ap, sequenceS } from 'fp-ts/lib/Apply'
 import type { Either } from 'fp-ts/lib/Either'
+import { chain } from 'fp-ts/lib/Either'
 import * as E from 'fp-ts/lib/Either'
 import Endo from 'fp-ts/lib/Endomorphism'
 import { flow, pipe } from 'fp-ts/lib/function'
@@ -15,9 +15,14 @@ import { matchE } from 'fp-ts/ReaderEither'
 
 export type Message = string
 
+export type Error = {
+  readonly type: string
+  readonly message?: string
+}
+
 export type ValidationErrors = {
   readonly value: unknown
-  readonly errors: NonEmptyArray<Message>
+  readonly errors: NonEmptyArray<Error>
 }
 
 export type Validation<A> = Either<ValidationErrors, A>
@@ -25,10 +30,10 @@ export type Validation<A> = Either<ValidationErrors, A>
 /*
  * 모든 에러 검출시 사용
  */
-export const validator = <A>(pred: Predicate<A>, errorMessage: Message) =>
+export const validator = <A>(pred: Predicate<A>, error: Error) =>
   E.match<ValidationErrors, A, Validation<A>>(
-    left => E.left(pred(left.value as A) ? left : { value: left.value, errors: concat(left.errors)([errorMessage]) }),
-    value => (pred(value) ? E.right(value) : E.left({ value, errors: [errorMessage] })) /*?*/,
+    left => E.left(pred(left.value as A) ? left : { value: left.value, errors: concat(left.errors)([error]) }),
+    value => (pred(value) ? E.right(value) : E.left({ value, errors: [error] })) /*?*/,
   )
 
 /*
@@ -38,11 +43,8 @@ export const validator = <A>(pred: Predicate<A>, errorMessage: Message) =>
  * const nameLengthMin = singleErrorValidator((name: RoomModel['name']) => name.length !== 0, '이름을 입력해줘')
  * const nameValidator = flow(nameLengthMin, nameLengthMax)
  *  */
-export const singleErrorValidator = <A>(pred: Predicate<A>, errorMessage: Message) =>
-  E.chain<Message, A, A>(value => (pred(value) ? E.right(value) : E.left(errorMessage)))
-
-// validation을 하기 위해 value로부터 검증 가능한 Either 모나드로 끌어올림
-export const liftE = <A>(v: A) => E.of(v)
+export const singleErrorValidator = <A>(pred: Predicate<A>, error: Error) =>
+  E.chain<Error, A, A>(value => (pred(value) ? E.right(value) : E.left(error)))
 
 /*
  * struct 형태에 대한 검증
