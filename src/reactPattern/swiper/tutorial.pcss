@@ -1,0 +1,208 @@
+.article_tutorial-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: var(--colors-darkGrey-4);
+
+
+    .tuto-text-wrap {
+        text-align: center;
+    }
+}
+
+.tutorial-swiper-contents {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+
+}
+
+
+/* steps */
+.article_tutorial-screen {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+
+
+    .step-images-wrap {
+        display: flex;
+        flex: 1;
+        position: relative;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .step-images {
+        position: relative;
+    }
+
+    &::before {
+        position: absolute;
+        content: "";
+        background-image: url("/image/grid.svg");
+        opacity: .7;
+
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        z-index: -1;
+    }
+    &::after {
+        content: "";
+        min-height: 146px;
+    }
+    >*:first-child{
+        height: 100%;
+    }
+
+    /* intro */
+    .tutorial-intro {
+        position: relative;
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        align-items: center;
+        overflow: hidden;
+
+
+        .background-viewer {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 90%;
+            opacity: .4;
+
+        }
+        .gradient-box {
+            position: absolute;
+            left: -2.9%;
+            right: -2.42%;
+            top: 40.95%;
+            bottom: 0;
+
+            background: linear-gradient(180deg, rgba(55, 55, 55, 0) 0%, #2A2A2A 96.79%);
+        }
+        .intro-img-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+        .img-box {
+            width: 100%;
+            background-size: contain;
+            background-position: bottom center;
+            background-repeat: repeat;
+            margin-top: -90px;
+        }
+        .folder-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 65px;
+            height: 65px;
+            background-color: var(--colors-white);
+            border: 1px solid var(--colors-black);
+            padding-top: 2px;
+            padding-left: 1px;
+            margin-bottom: 24px;
+            border-radius: 16px;
+        }
+        .count-badge {
+            position: absolute;
+            top: -16px;
+            right: -50px;
+            padding: 6px;
+            background-color: var(--colors-alert);
+            color: var(--colors-white);
+            font-weight: var(--fontWeights-m);
+
+        }
+    }
+
+    /* step1 */
+    .step1 {
+        display: flex;
+        flex-direction: column;
+
+        .step-images {
+            transform: translateY(-3%);
+        }
+
+        .step-images img {
+            position: relative;
+            z-index: 1;
+        }
+        .star1, .star2 {
+            position: absolute;
+        }
+        .star1 {
+            position: absolute;
+            top: -45px;
+            left: -51px;
+            z-index: 2;
+
+        }
+        .star2 {
+            bottom: -56px;
+            right: -107px;
+            z-index: 0;
+        }
+        .url-box {
+            position: absolute;
+            bottom: -76px;
+            left: -53px;
+            padding: 10px;
+            border-radius: 8px;
+            background: var(--colors-darkGrey-2);
+        }
+    }
+
+
+
+    /* step2 */
+    .step2 {
+        display: flex;
+        flex-direction: column;
+
+        .step-images {
+            transform: translateY(10%);
+        }
+
+        .share-icons {
+            > * {
+                margin-left: 8px;
+            }
+            >:first-child {
+                margin-left: 0;
+            }
+        }
+    }
+
+
+}
+
+.swiper-navigation-wrapper{
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.swiper-navigation-wrapper .swiper-cta {
+    width: 100%;
+    display: none;
+    max-width: 344px;
+}
+.swiper-active-slide-2 {
+    .swiper-pagination, .swiper-navigation-wrapper .swiper-navigation {
+        display: none;
+    }
+
+    .swiper-navigation-wrapper .swiper-cta {
+        display: block;
+    }
+
+}

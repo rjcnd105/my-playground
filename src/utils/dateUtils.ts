@@ -8,11 +8,11 @@ const dateUtils = {
   },
 
   // yyyy-MM-dd
-  toDateString: format(`yyyy.MM.dd`),
+  toDateString: (separator: string = '.') => format(`yyyy${separator}MM${separator}dd`),
   // MM-dd
-  toMonthDate: format(`MM.dd`),
+  toMonthDate: (separator: string = '.') => format(`MM${separator}dd`),
   // yyyy-MM
-  toYearMonth: format(`yyyy.MM`),
+  toYearMonth: (separator: string = '.') => format(`yyyy${separator}MM`),
   // MM월 dd일
   toKoMonthDay: format('MM월 dd일'),
   toKoMonth: format('MM월')
