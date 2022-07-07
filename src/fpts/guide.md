@@ -45,6 +45,13 @@ T: ```Some<A> | None```
 ```Either<never, A>``` 처럼 사용시 실패할 수 없는 Either이다.  
 T: ```Left<E> | Right<A>```
 
+
+**Separated&lt;E, A&gt;**
+위 Eight의 Left와 Right를 둘 다 가지고 있다.  
+일반적으로 실패```E[]```와 성공```A[]```에 대한 집계를 해서 최종 처리를 하는데 사용한다.  
+T: ```{ left: E, right: A }```
+
+
 **Reader&lt;R, A&gt;**  
 [Dependence Injector로 많이 사용됌](https://dev.to/gcanti/getting-started-with-fp-ts-reader-1ie5)  
 DI인데, Lazy한 DI이다.  
@@ -66,18 +73,18 @@ concat으로 항등원을 결합하면 입력 값이 그대로 나옴을 약속�
 
 **IO&lt;A&gt;**  
 동기적으로 side effect를 수행한 후 결과를 돌려줌. (ex: localStorage get, dom 읽기 등)  
-IO&lt;void&gt;처럼 쓰면 리턴하지 않는 side effect를 실행한다는 것. (ex: localStorage set, console.log, dom write 작업)  
+IO&lt;void&gt;처럼 쓰면 리턴하지 않는 side effect를 실행한다는 것. (ex: localStorage set, console.log, dom write 작업)   
 T: ```() -> A```
 
 **Lazy&lt;A&gt;** (thunk라고도 함)  
-동기적인 작업. IO와 구현은 똑같으나 side effect처리가 아닌 순수 함수의 의미  
+동기적인 작업. IO와 구현은 똑같으나 side effect처리가 아닌 순수 함수의 의미   
 T: ```() -> A```
 
 **Task&lt;A&gt;**  
 비동기 작업, Lazy Promise&lt;A&gt;, Promise는 순수하지 않고 참조 불투명하여 Task라는 통으로 Promise라는 내용물을 감싼다.  
 이로써 내부적으로는 side effect를 처리하지만 이를 lazy하게 처리함으로써 순수함을 얻는다.
 실패가 존재하지 않는다.  
-실패가 존재하지 않음을 확실히 알고 있을 때에만 Task를 쓰며, 아닐 경우 TaskEither을 사용하라.  
+실패가 존재하지 않음을 확실히 알고 있을 때에만 Task를 쓰며, 아닐 경우 TaskEither을 사용하라.   
 T: ```() -> Promise<A>```
 
 **TaskEither&lt;E, A&gt;**  
@@ -92,7 +99,7 @@ Reader(DI) + IO(side effect)
 T: ```R -> () -> A```
 
 **ReaderTask&lt;R, A&gt;**  
-Reader(DI) + Task(async)
+Reader(DI) + Task(async)  
 T: ```R -> () -> Promise<A>```
 
 **ReaderTaskEither&lt;R, E, A&gt;**  

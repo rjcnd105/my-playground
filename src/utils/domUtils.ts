@@ -26,7 +26,6 @@ function getPositionValue(
     position: ScrollOpt['position'],
     { scrollSize, elTop, elSize }: { scrollSize: number; elTop: number; elSize: number }
 ) {
-    console.log(elTop, scrollSize, elSize)
     switch (position) {
         case 'top':
             return elTop
@@ -77,17 +76,17 @@ const scrollToY = (
         })
         : (scrollEl.scrollTop = positionValue)
 }
-
-const onEnter = (fn: React.KeyboardEventHandler<HTMLInputElement>) => (e: React.KeyboardEvent<HTMLInputElement>) => {
+const onInputKey =  (event: string) => (fn: React.KeyboardEventHandler<HTMLInputElement>) => (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
         e.preventDefault()
         return fn(e)
     }
 }
+const onEnter = onInputKey('Enter')
 
 const domUtils = {
     inputChangeTrigger,
     scrollToY,
-    onEnter
+    onEnter,
 }
 export default domUtils

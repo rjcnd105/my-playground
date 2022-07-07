@@ -1,5 +1,6 @@
 import * as RTE from 'fp-ts/lib/ReaderTaskEither'
 import * as RT from 'fp-ts/lib/ReaderTask'
+import * as S from 'fp-ts/lib/string'
 import * as T from 'fp-ts/lib/Task'
 import * as TE from 'fp-ts/lib/TaskEither'
 import * as IO from 'fp-ts/lib/IO'
@@ -14,6 +15,8 @@ import { reduce } from 'fp-ts/lib/Foldable'
 import { flow2 } from '../utils/flow2/flow2'
 import { composeWithCurriedFunction } from '../otherUtils/composeWithCurriedFunction/composeWithCurriedFunction'
 import { Window } from 'happy-dom'
+import { generatePath } from 'react-router'
+import { makePathGenerator } from '../utils/makePathGenerator'
 
 interface ApiError {
   code: number
@@ -184,6 +187,9 @@ export function readResData<A>(r: Pick<Response, 'json'>) {
   return TO.tryCatch<A>(() => r.json())
 }
 t2()
+
+const ffff =  makePathGenerator("aaa/:bbb")
+
 
 export default {}
 
