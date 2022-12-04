@@ -70,12 +70,10 @@ enumerate<Color>()('blue', 'red')
  * TupleUnion<keyof { bar: string; leet: number }>;
  * ["bar", "leet"] | ["leet", "bar"];
  */
-type TupleUnion<U extends string, R extends string[] = []> = {
-  [S in U]: Exclude<U, S> extends never
-    ? [...R, S]
-    : TupleUnion<Exclude<U, S>, [...R, S]>
-}[U] &
-  string[]
+
+type TupleUnion<U extends string, R extends any[] = []> = {
+  [S in U]: Exclude<U, S> extends never ? [...R, S] : TupleUnion<Exclude<U, S>, [...R, S]>;
+}[U];
 
 interface Person {
   firstName: string
@@ -84,6 +82,8 @@ interface Person {
   hasCats: false
 }
 type keys = TupleUnion<keyof Person> //  ["firstName", "lastName", "dob", "hasCats"] | ... 22 more ... | [...]
+
+const k: keys = ['firstName', 'lastName', 'dob', 'hasCats']
 
 type UnionToTuple<T> = (
   (T extends any ? (t: T) => T : never) extends infer U
@@ -94,6 +94,8 @@ type UnionToTuple<T> = (
 ) extends (_: any) => infer W
   ? [...UnionToTuple<Exclude<T, W>>, W]
   : []
+
+
 
 type Tuple = UnionToTuple<
   | 2

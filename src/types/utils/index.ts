@@ -1,4 +1,5 @@
 // object 값들의 타입을 추출
+import { ComponentType } from 'react'
 import { typeSafeAssign } from '../../utils'
 
 export type Constructor<T = { }> = new (
@@ -79,4 +80,8 @@ export type IdentifiableString<T> = T extends string
 type C<A> = { [K in keyof A]: A[K] }
 
 export type Optional<A, B extends keyof A> = C<Omit<A, B> & { [K in B]?: A[K] }>
+
+
+// 컴포넌트 타입 추출
+export type ExtractProps<T> = T extends ComponentType<infer P> ? P : T;
 
